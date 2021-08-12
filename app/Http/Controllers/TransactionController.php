@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Item;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
-class ItemController extends Controller
+class TransactionController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('user');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -18,9 +14,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::with('transactions')->get();
-        // return \view('items.index', \compact('items'));
-        return \view('items.index',\compact('items'));
+        //
     }
 
     /**
@@ -47,10 +41,10 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Item  $item
+     * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function show(Item $item)
+    public function show(Transaction $transaction)
     {
         //
     }
@@ -58,10 +52,10 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Item  $item
+     * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function edit(Item $item)
+    public function edit(Transaction $transaction)
     {
         //
     }
@@ -70,10 +64,10 @@ class ItemController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Item  $item
+     * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Item $item)
+    public function update(Request $request, Transaction $transaction)
     {
         //
     }
@@ -81,10 +75,10 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Item  $item
+     * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Item $item)
+    public function destroy(Transaction $transaction)
     {
         //
     }
