@@ -1,5 +1,7 @@
 @extends('layouts.main')
-@section('title','Projects')
+@section('title','Items')
+@section('style')
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/daterangepicker.css') }}" />
 @section('style')
 <style>
     i.text-success, i.text-secondary{
@@ -7,7 +9,7 @@
     }
 </style>
 @section('main-content')
-<h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
+{{-- <h1 class="h3 mb-4 text-gray-800">Items Page</h1> --}}
 @if($errors->any())
 <div class="row align-items-start m-0">
     @foreach ($errors->all() as $error)
@@ -25,78 +27,80 @@
 </div>
 @endif
 <div class="card">
+    <div class="card-header pb-0">
+        <div class="row">
+            <div class="col col-sm-7">
+                <h6 class="m-0 font-weight-bold text-primary">DataTables Items</h6>
+            </div>
+            <div class="col col-sm-5 text-right">
+                <form action="{{ url()->current() }}">
+                    <div class="form-row">
+                        <div class="col col-md-7 text-right">
+                            <input class="form-control form-control-sm" id="daterange" type="text" name="daterange" value="{{ request('daterange') }}"/>
+                        </div>
+                        <div class="col col-md-5 text-right">
+                            <button type="submit" class="btn btn-sm btn-info">urutkan</button>
+                            <a href="{{ route('items.index') }}" class="btn btn-sm btn-primary">clear</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="card-body">
-        <table class="table">
+        <table class="table" id="dataTable" width="100%" cellspacing="0">
             <thead>
                 <tr class="text-dark">
                     <th class="align-middle" scope="col">#</th>
-                    <th class="align-middle" scope="col">Name</th>
-                    <th class="align-middle" scope="col">Email</th>
-                    <th class="align-middle" scope="col" >Telp</th>
-                    <th class="align-middle text-center" scope="col">Sosial Media</th>
-                    <th class="align-middle text-center" scope="col">Action</th>
+                    <th class="align-middle" scope="col">Nama</th>
+                    <th class="align-middle" scope="col">Kode</th>
+                    <th class="align-middle" scope="col">Stock</th>
+                    <th class="align-middl" scope="col">Harga</th>
+                    <th class="align-middl" scope="col"><small><strong>Rp.</strong></small></th>
+                    <th class="align-middle text-center" scop5e="col">Action</th>
                 </tr>
             </thead>
-            <tbody>
-                {{-- @forelse ($teams as $team)
+            <tfoot>
                 <tr>
-                    <th scope="row">{{ $loop->iteration }}</th>
-                    <td>{{ $team->name }}</td>
-                    <td>{{ $team->email }}</td>
-                    <td>{{ $team->email }}</td>
+                    <th class="align-middle" scope="col">#</th>
+                    <th class="align-middle text-center" scope="col" colspan="3">Barang</th>
+                    <th class="align-middle" scope="col">Satuan</th>
+                    <th class="align-middle" scope="col">Box</th>
+                    <th class="align-middle text-center" scope="col">Action</th>
+                </tr>
+            </tfoot>
+            <tbody>
+                @forelse ($items as $item)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->code }}</td>
+                    <td>{{ $item->stock }}</td>
+                    <td id="money">{{ $item->price }}</td>
+                    <td id="money">{{ $item->price_box }}</td>
                     <td class="text-center">
-                        <a href="{{ $team->twitter ? $team->twitter : '#'}}" class="btn btn-sm btn-transparent p-0">
-                            <i class="fas fa-check-circle {{ $team->twitter ? 'text-success' : 'text-secondary' }}"></i>
-                        </a>
-                    </td>
-                    <td class="text-center">
-                        <a href="{{ $team->instagram ? $team->instagram : '#'}}" class="btn btn-sm btn-transparent p-0">
-                            <i class="fas fa-check-circle {{ $team->instagram ? 'text-success' : 'text-secondary' }}"></i>
-                        </a>
-                    </td>
-                    <td class="text-center">
-                        <a href="{{ $team->linkedin ? $team->linkedin : '#'}}" class="btn btn-sm btn-transparent p-0">
-                            <i class="fas fa-check-circle {{ $team->linkedin ? 'text-success' : 'text-secondary' }}"></i>
-                        </a>
-                    </td>
-                    <td class="text-center">
-                        <a href="{{ $team->facebook ? $team->facebook : '#'}}" class="btn btn-sm btn-transparent p-0">
-                            <i class="fas fa-check-circle {{ $team->facebook ? 'text-success' : 'text-secondary' }}"></i>
-                        </a>
-                    </td>
-                    <td class="text-center">
-                        <a href="{{ $team->github ? $team->github : '#'}}" class="btn btn-sm btn-transparent p-0">
-                            <i class="fas fa-check-circle {{ $team->github ? 'text-success' : 'text-secondary' }}"></i>
-                        </a>
-                    </td>
-                    <td class="text-center">
-                        <a href="{{ route('teams.edit',$team->id) }}" class="btn btn-sm btn-primary">
+                        <a href="{{ route('items.edit',$item->id) }}" class="btn btn-sm btn-primary">
                             Edit
                         </a>
-                        <form action="{{ route('teams.destroy',$team->id) }}" class="btn btn-sm btn-transparent p-0 m-0" method="POST">
+                        <form action="{{ route('items.destroy',$item->id) }}" class="btn btn-sm btn-transparent p-0 m-0" method="POST">
                             @method('DELETE')
                             @csrf
                             <button class="btn btn-sm btn-danger">Delete</button>
                         </form>
                     </td>
                 </tr>
-                @empty --}}
+                @empty
                 <tr>
-                    <td colspan="10" class="text-center">Data kosong!!</td>
+                    <td colspan="7" class="text-center">Data kosong!!</td>
                 </tr>
-                {{-- @endforelse --}}
+                @endforelse
             </tbody>
         </table>
         <div class="row mt-2">
             <div class="col align-middle">
-                <button type="button" class="btn btn-success btn-circle p-0" data-toggle="modal" data-target="#exampleModal">
-                    <i style="font-size: 200%" class="fas fa-plus-circle"></i>
+                <button type="button" class="btn btn-sm btn-success btn-circle p-0" data-toggle="modal" data-target="#myModal">
+                    <i style="font-size: 170%" class="fas fa-plus-circle"></i>
                 </button>
-            </div>
-            <div class="col align-middle">
-                <div class="d-flex flex-row-reverse">
-                    {{-- {{ $teams->links() }} --}}
-                    </div>
             </div>
         </div>
     </div>
@@ -104,7 +108,27 @@
 @include('items.modal')
 @endsection
 @push('script')
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script>
-    $('#myModal').modal('show')
+    $('#daterange').daterangepicker();
+    $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+        let startDate = picker.startDate.format('YYYY-MM-DD');
+        let endDate = picker.endDate.format('YYYY-MM-DD')
+        console.log(startDate);
+        console.log(endDate);
+    });
+</script>
+<script>
+    $('#myModal').modal('enable')
+</script>
+<script>
+    let x = document.querySelectorAll("#money");
+    for (let i = 0, len = x.length; i < len; i++) {
+        let num = Number(x[i].innerHTML)
+                  .toLocaleString('ID');
+        x[i].innerHTML = num;
+        x[i].classList.add("currSign");
+    }
 </script>
 @endpush
