@@ -55,17 +55,15 @@
                     <th class="align-middle" scope="col">Nama</th>
                     <th class="align-middle" scope="col">Kode</th>
                     <th class="align-middle" scope="col">Stock</th>
-                    <th class="align-middl" scope="col">Harga</th>
-                    <th class="align-middl" scope="col"><small><strong>Rp.</strong></small></th>
+                    <th class="align-middl" scope="col">Harga <small><strong>Rp.</strong></small></th>
+                    <th class="align-middl" scope="col">jenis</th>
                     <th class="align-middle text-center" scop5e="col">Action</th>
                 </tr>
             </thead>
             <tfoot>
                 <tr>
                     <th class="align-middle" scope="col">#</th>
-                    <th class="align-middle text-center" scope="col" colspan="3">Barang</th>
-                    <th class="align-middle" scope="col">Satuan</th>
-                    <th class="align-middle" scope="col">Box</th>
+                    <th class="align-middle text-center" scope="col" colspan="5">Barang</th>
                     <th class="align-middle text-center" scope="col">Action</th>
                 </tr>
             </tfoot>
@@ -77,7 +75,13 @@
                     <td>{{ $item->code }}</td>
                     <td>{{ $item->stock }}</td>
                     <td id="money">{{ $item->price }}</td>
-                    <td id="money">{{ $item->price_box }}</td>
+                    <td>
+                        @if($item->type == 'unit')
+                        satuan
+                        @else
+                        box
+                        @endif
+                    </td>
                     <td class="text-center">
                         <a href="{{ route('items.edit',$item->id) }}" class="btn btn-sm btn-primary">
                             Edit

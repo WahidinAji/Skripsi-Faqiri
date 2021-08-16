@@ -25,7 +25,7 @@ class ItemFactory extends Factory
             'name' => $this->faker->title,
             'code' => $this->faker->bothify('##?#?'),
             'price' => $this->faker->numberBetween(1000, 99000),
-            'price_box' => $this->faker->numberBetween(100000, 1000000),
+            'type' => $this->faker->randomElement(['box', 'unit']),
             'stock' => $this->faker->numberBetween(0, 100),
             'created_at' => $this->faker->dateTimeThisMonth,
             'updated_at' => $this->faker->dateTimeThisMonth

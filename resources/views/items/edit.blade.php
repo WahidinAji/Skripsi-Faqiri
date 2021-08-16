@@ -40,9 +40,20 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="price_box" class="col-sm-2 col-form-label">Harga Barang Box</label>
+                <label for="inputType" class="col-sm-2 col-form-label @error('type') is-invalid @enderror">Tipe Barang</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control @error('price_box') is-invalid @enderror" name="price_box" id="price_box" value="{{ old('price_box') ? old('price_box') : $item->price_box }}">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="type" id="exampleRadios1" value="box" {{ $item->type == 'unit' ? 'box' : 'checked' }}>
+                        <label class="form-check-label" for="exampleRadios1">
+                          Box
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="type" id="exampleRadios2" value="unit" {{ $item->type == 'box' ? 'unit' : 'checked' }}>
+                        <label class="form-check-label" for="exampleRadios2">
+                          Satuan
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="form-group row">

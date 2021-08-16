@@ -31,7 +31,7 @@ class ItemRequest extends FormRequest
             ],
             'stock' => 'required|min:1',
             'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'price_box' => 'required|regex:/^\d+(\.\d{1,2})?$/'
+            'type' => 'required|in:box,unit'
         ];
     }
 }

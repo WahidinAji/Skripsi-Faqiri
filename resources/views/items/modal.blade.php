@@ -23,15 +23,26 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputGroup" class="col-sm-2 col-form-label">Harga Barang</label>
+                        <label for="inputPrice" class="col-sm-2 col-form-label">Harga Barang</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control @error('price') is-invalid @enderror" id="inputPrice" value="{{ old('price') }}" name="price">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputGroup" class="col-sm-2 col-form-label">Harga Barang Box</label>
+                        <label for="inputType" class="col-sm-2 col-form-label @error('type') is-invalid @enderror">Tipe Barang</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control @error('price_box') is-invalid @enderror" id="inputPriceBox" value="{{ old('price_box') }}" name="price_box">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="type" id="exampleRadios1" value="box" checked>
+                                <label class="form-check-label" for="exampleRadios1">
+                                  Box
+                                </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="type" id="exampleRadios2" value="unit">
+                                <label class="form-check-label" for="exampleRadios2">
+                                  Satuan
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
