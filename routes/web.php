@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,3 +24,4 @@ Route::post('login', [AuthController::class, 'authenticate'])->name('login');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::resource('items', ItemController::class);
+Route::resource('transactions', TransactionController::class);
