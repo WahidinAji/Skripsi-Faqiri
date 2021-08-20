@@ -60,7 +60,7 @@
             else{
                 html +=`
                 <div class="col-sm-1">
-                    <button onclick="create()" type="button" name="adding" id="adding" class="btn btn-success">Add</button></td>
+                    <button type="button" name="adding" id="adding" class="btn btn-success">Add</button></td>
                 </div>
                 `;
                 $('#form').html(html);
