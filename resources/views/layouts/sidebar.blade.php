@@ -33,6 +33,11 @@
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Transactions</span></a>
     </li>
+    <li class="nav-item {{ (request()->is('carts*')) ? 'active' : null }}">
+        <a class="nav-link" href="{{ route('carts') }}">
+            <i class="fas fa-grin-beam"></i>
+            <span>Carts</span></a>
+    </li>
     {{-- <li class="nav-item {{ (request()->is('admin/budgets*')) ? 'active' : null }}">
         <a class="nav-link" href="{{ route('budgets.index') }}">
             <i class="fas fa-hand-holding-usd"></i>

@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TransactionRequest;
+use App\Models\Cart;
+use App\Models\Item;
 use App\Models\Transaction;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('user');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +24,26 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        // $transactions = Transaction::select(DB::raw("count('id')"))->groupBy('code')->take(5)->get();
+        // $transactions = Transaction::all();
+        // \dd($transactions);
+        $transactions = Transaction::with('items')->orderBy('id', 'DESC')->take(10)->get();
+
+        if (\request()->has('daterange')) {
+            $date = \explode("- ", \request('daterange'));
+            $from = Carbon::parse($date[0])->format('Y-m-d H:i:s');
+            $to = Carbon::parse($date[1])->format('Y-m-d H:i:s');
+            $date1 = \date_create($from);
+            $date2 = \date_create($to);
+            $interval = \date_diff($date1, $date2);
+            if ($interval->days > 30) {
+                $days = $interval->days + 1;
+                return \back()->with(['msg' => "anda menginput range waktu sebanyak $days hari, range waktu tidak boleh lebih dari 31 hari."]);
+            }
+            $transactions = Transaction::with('items')->whereBetween('created_at', [$from, $to])->get();
+        }
+        // dd($transactions);
+        return \view('transactions.index', \compact('transactions'));
     }
 
     /**
@@ -24,7 +53,7 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        //
+        return \view('transactions.create');
     }
 
     /**
@@ -33,9 +62,94 @@ class TransactionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        $code = $req->price_total . '_' . \date('YmdHi');
+        DB::beginTransaction();
+        try {
+            DB::table('carts')->update(['status' => 1]);
+            $transaction = Transaction::create([
+                'code' => $code,
+                'date' => \now(),
+                'price_total' => $req->price_total,
+                'user_id' => \auth()->user()->getAuthIdentifierName()
+            ]);
+            DB::commit();
+            return \back()->with('msg', "Berhasil melakukan transaksi dengan code transaksi $transaction->code");
+        } catch (Exception $e) {
+            DB::rollBack();
+            return \back()->with('msg', 'Something Went Wrong!, tidak berhasil merubah data!!' . $e);
+        }
+    }
+    public function store1(TransactionRequest $req)
+    {
+        \dd($req->all());
+        /*
+            $var = array(
+                0 => 1,
+                1 => 4
+            );
+            $sum = 0;
+            foreach ($var as $value) {
+                # code...
+                $item = DB::table('items')->where('id', $value)->get();
+                // \dd(array_sum($item->price));
+                // $sum = 0;
+                // foreach ($item as $a) {
+                //     // $v = $a->price;
+                //     // \dd(array_sum($v));
+                //     $sum += $a->price;
+                //     \dd($sum);
+                // }
+                // \dd($item);
+                // dd($item[0]->price);
+                // echo $item;
+                \dump($item);
+                // \var_dump($item);
+            }
+            \dd($item);
+        */
+
+        // \dd(array_sum($req->price));
+        $item_id = $req->item_id;
+        // if (\is_array($item_id)) {
+        //     foreach ($item_id as $var) {
+        //         \dd("array", \array_sum($var));
+        //     }
+        // }
+        // \dd("bukan array");
+        $sum = 0;
+        // $item = DB::table('items')->where('id', $item_id)->get();
+        // foreach ($item as $key => $val) {
+        //     // \dd($val->price);
+        //     $a = $sum += $val->price;
+        //     \dd($a);
+        // }
+
+        if (\is_array($item_id)) {
+            foreach ($item_id as $value) {
+                $item = DB::table('items')->where('id', $item_id)->get();
+                foreach ($item as $key => $value) {
+                    // $v = int $value->price;
+                    $transaction = Transaction::create([
+                        'item_id' => $value,
+                        'code' => $req->code,
+                        'date' => \now(),
+                        'price_total' => $value->price,
+                        'items_total' => \rand(1, 5)
+                    ]);
+                }
+            }
+            return \back()->with('msg', "Berhasil melakukan transaksi dengan code transaksi $transaction->code");
+        }
+        $transaction = Transaction::create([
+            'item_id' => $item_id,
+            'code' => $req->code,
+            'date' => \now(),
+            'price_total' => \rand(30000, 40000),
+            'items_total' => \rand(1, 5)
+        ]);
+        return \back()->with('msg', "Berhasil melakukan transaksi dengan code transaksi $transaction->code");
     }
 
     /**
@@ -46,7 +160,7 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        //
+        return \view('transaction.edit', \compact('trasnsaction'));
     }
 
     /**
@@ -57,7 +171,7 @@ class TransactionController extends Controller
      */
     public function edit(Transaction $transaction)
     {
-        //
+        return \view('transaction.edit', \compact('trasnsaction'));
     }
 
     /**
@@ -67,9 +181,11 @@ class TransactionController extends Controller
      * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transaction $transaction)
+    public function update(TransactionRequest $req, Transaction $transaction)
     {
-        //
+        if ($transaction->status == 1) return \back()->with('msg', 'Transaksi sudah di selesai, tidak boleh diubah');
+        $transaction->update($req->all());
+        return \redirect()->route('transactions.index')->with('msg', 'Berhasil memperbaharui data transaksi');
     }
 
     /**
@@ -80,6 +196,7 @@ class TransactionController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        //
+        $transaction->delete();
+        return \back()->with('msg', 'Berhasil menghapus data transaksi');
     }
 }

@@ -15,12 +15,9 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('item_id')->constrained()->->onDelete('cascade');
-            $table->foreignId('item_id')->nullable()->constrained()->nullOnDelete();
             $table->string('code');
             $table->date('date');
             $table->decimal('price_total', 16, 2);
-            $table->unsignedBigInteger('items_total');
             $table->foreignId('user_id')->nullable()->constrained();
             $table->timestamps();
             $table->softDeletes();

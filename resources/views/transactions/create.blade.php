@@ -82,7 +82,7 @@
             html += `<label for="item_id" class="col-sm-2 col-form-label pr-0">Nama Barang </label>`;
             html += `
             <div class="col-sm-4">
-                <select class="js-example-data-ajax form-control" id="name" name="name[]">
+                <select class="form-control" id="name" name="name[]">
                 </select>
             </div>
             <div class="col-sm">
@@ -115,7 +115,7 @@
             count--;
             $(this).closest("#row_form").remove();
         });
-        $(".js-example-data-ajax").select2({
+        $(`#name`).select2({
             ajax: {
                 url: "https://api.github.com/search/repositories",
                 dataType: 'json',
