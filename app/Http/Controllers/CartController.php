@@ -17,7 +17,7 @@ class CartController extends Controller
      */
     public function index()
     {
-        $items = Item::take(100)->paginate(10);
+        $items = Item::all();
         $carts = Cart::with('items')->where('status', '0')->get();
         $sum = Cart::select(DB::raw("sum(IF(status = '0',price,0)) as sum"))->get();
         return \view('create', \compact('items', 'carts', 'sum'));
@@ -42,20 +42,33 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $item = Item::where('id', $request->item_id)->first();
-        if ($request->total > $item->stock || $request->total == '0' || $request->total == null) return back()->with('msg', 'Tidak boleh lebih dari stock atau 0 atau kosong');
+        $invalid = $request->total > $item->stock || $request->total <= '0' || $request->total == null;
+        if ($invalid) return back()->with('msg', 'Tidak boleh lebih dari stock, 0, kosong atau minus');
+        $item_id = Cart::where('item_id', $request->item_id)->where('status', '0')->first(); //check if id is already or not, include condition where status is 0
         DB::beginTransaction();
         try {
             $cart = new Cart();
             $cart->item_id = $item->id;
-            $cart->price = $item->price;
             $cart->name = $item->name;
-            $cart->total = $request->total;
             $cart->status = '0';
             $item->stock = $item->stock - $request->total;
+            $total = $request->total;
+            if (isset($item_id)) {
+                //total updating if $team_id is true
+                $total = $item_id->total + $request->total;
+                $item_id->price = $item->price * $total; //sum price of total
+                $item_id->total = $total;
+                $item_id->save();
+                $item->save();
+                DB::commit();
+                return \back()->with('msg', 'Success update stock');
+            }
+            $cart->price = $item->price * $request->total;
+            $cart->total = $total;
             $cart->save();
             $item->save();
             DB::commit();
-            return \back()->with('msg', 'Succcess');
+            return \back()->with('msg', 'Success to add item');
         } catch (Exception $e) {
             DB::rollBack();
             return \back()->with('msg', 'Something Went Wrong!, tidak berhasil merubah data!!' . $e);
@@ -70,7 +83,7 @@ class CartController extends Controller
      */
     public function show(Cart $cart)
     {
-        //
+        return \back();
     }
 
     /**
@@ -81,7 +94,7 @@ class CartController extends Controller
      */
     public function edit(Cart $cart)
     {
-        //
+        return \back();
     }
 
     /**
@@ -93,6 +106,22 @@ class CartController extends Controller
      */
     public function update(Request $request, Cart $cart)
     {
+        $total_cart = $cart->items->stock + $cart->total;
+        $invalid = $request->total > $total_cart || $request->total == $cart->total || $request->total == null || $request->total <= '0';
+        if ($invalid) return back()->with('msg', 'Tidak boleh melebihi stock!!');
+        DB::beginTransaction();
+        try {
+            $cart->total = $request->total;
+            $cart->items->stock = $total_cart - $request->total;
+            $cart->price = $cart->items->price * $request->total;
+            $cart->save();
+            $cart->items->save();
+            DB::commit();
+            return back()->with('msg', 'Berhasil memperbaharui jumlah barang!!');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return \back()->with('msg', 'Something Went Wrong!, tidak berhasil merubah data!!' . $e);
+        }
     }
 
     /**
@@ -103,6 +132,18 @@ class CartController extends Controller
      */
     public function destroy(Cart $cart)
     {
-        //
+        if ($cart->status == '1') return back()->with('msg', 'Tidak boleh dihapus!!');
+        DB::beginTransaction();
+        try {
+            $stock = $cart->total + $cart->items->stock;
+            $cart->items->stock = $stock;
+            $cart->items->save();
+            $cart->delete();
+            DB::commit();
+            return \back()->with('msg', 'Berhasil menghapus barang!!');
+        } catch (Exception $e) {
+            DB::rollback();
+            return \back()->with('msg', 'Something Went Wrong!, tidak berhasil menghapus data!!' . $e);
+        }
     }
 }

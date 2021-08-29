@@ -20,7 +20,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::with('transactions')->orderBy('id', 'DESC')->take(50)->get();
+        $items = Item::orderBy('id', 'DESC')->take(50)->get();
         if (\request()->has('daterange')) {
             $date = \explode("- ", \request('daterange'));
             $from = Carbon::parse($date[0])->format('Y-m-d H:i:s');
@@ -32,7 +32,7 @@ class ItemController extends Controller
                 $days = $interval->days + 1;
                 return \back()->with(['msg' => "anda menginput range waktu sebanyak $days hari, range waktu tidak boleh lebih dari 31 hari."]);
             }
-            $items = Item::with('transactions')->whereBetween('created_at', [$from, $to])->get();
+            $items = Item::whereBetween('created_at', [$from, $to])->get();
         }
         return \view('items.index', \compact('items'));
     }

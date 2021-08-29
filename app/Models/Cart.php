@@ -10,7 +10,7 @@ class Cart extends Model
     use HasFactory;
     protected $fillable = ['item_id', 'price', 'name', 'total', 'status'];
     public $timestamps = true;
-    public function carts()
+    public function items()
     {
         return $this->belongsTo(Item::class, 'item_id', 'id');
     }

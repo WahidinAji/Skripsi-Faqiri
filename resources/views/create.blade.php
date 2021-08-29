@@ -82,7 +82,7 @@
                         @endif
                     </td>
                     <td class="text-center">
-                        <form action="{{ route('carts.post') }}" class="btn btn-sm btn-transparent p-0 m-0" method="POST">
+                        <form action="{{ route('carts.store') }}" class="btn btn-sm btn-transparent p-0 m-0" method="POST">
                             <input type="number" class="form-contro form-control-sm" name="total" placeholder="input jumlah" max="{{ $item->stock }}" maxlength="{{ $item->stock }}">
                             @csrf
                             <input type="hidden" value="{{ $item->id }}" name="item_id">
@@ -102,8 +102,8 @@
                 <tr class="text-dark">
                     <th class="align-middle" scope="col">#</th>
                     <th class="align-middle" scope="col">Nama</th>
-                    <th class="align-middle" scope="col">Jumlah</th>
                     <th class="align-middle" scope="col">Harga <small><strong>Rp.</strong></small></th>
+                    <th class="align-middle" scope="col" colspan="2">Jumlah</th>
                     <th class="align-middle" scope="col">Action</th>
                 </tr>
             </thead>
@@ -112,9 +112,25 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $cart->items->name }}</td>
-                    <td>{{ $cart->total }}</td>
-                    <td>{{ $cart->price }}</td>
-                    <td>{{ $cart->status }}</td>
+                    <td id="money">{{ $cart->price }}</td>
+                    <form action="{{ route('carts.update',$cart->id) }}" class="btn btn-sm btn-transparent p-0 m-0" method="POST">
+                        <td width="10%">
+                            @method('PUT')
+                            @csrf
+                            <input type="hidden" value="{{ $cart->items->id }}" name="item_id">
+                            <input type="number" class="form-control form-control-sm" value="{{ $cart->total }}" name="total">
+                        </td>
+                        <td class="m-0" width="12%">
+                            <button type="submit" class="btn btn-sm btn-outline-warning">Update jumlah</button>
+                        </td>
+                    </form>
+                    <td>
+                        <form action="{{ route('carts.destroy',$cart->id) }}" class="btn btn-sm btn-transparent p-0 m-0" method="POST">
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit" onclick="return confirm('Apakah anda yakin ingin mengahapus barang?')" class="btn btn-sm btn-outline-danger">Hapur barang</button>
+                        </form>
+                    </td>
                 </tr>
                 @empty
                 <tr>
@@ -127,11 +143,11 @@
                     @csrf
                     @foreach ($sum as $cart)
                     <tr>
-                        <th colspan="3"><strong>Total Harga</strong></th>
-                        <th><strong>{{ $cart->sum }}</strong></th>
+                        <th colspan="2"><strong>Total Harga</strong></th>
+                        <th><strong id="money">{{ $cart->sum }}</strong></th>
+                        <th colspan="2"></th>
                         <th>
                             <input type="hidden" name="price_total" value="{{ $cart->sum }}">
-                            <input type="hidden" name="price_total" value="{{ $cart->total }}">
                             <button onclick="return confirm('Selesaikan transaksi?')" class="btn btn-sm btn-success">Selesai</button>
                         </th>
                     </tr>

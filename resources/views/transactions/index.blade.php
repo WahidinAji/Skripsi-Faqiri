@@ -65,7 +65,6 @@
                 <tr class="text-dark">
                     <th class="align-middle" scope="col">#</th>
                     <th class="align-middle" scope="col">Kode</th>
-                    <th class="align-middle" scope="col">Kode</th>
                     <th class="align-middle" scope="col">Tanggal</th>
                     <th class="align-middl" scope="col">Harga <small>(Rp.)</small></th>
                     <th class="align-middl" scope="col">Jumlah</th>
@@ -85,7 +84,6 @@
                 @forelse ($transactions as $transaction)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $transaction->items->code }}</td>
                     <td>{{ $transaction->code }}</td>
                     <td>{{ $transaction->date }}</td>
                     <td id="money">{{ $transaction->price_total }}</td>

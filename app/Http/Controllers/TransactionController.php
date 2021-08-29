@@ -64,18 +64,19 @@ class TransactionController extends Controller
      */
     public function store(Request $req)
     {
-        $code = $req->price_total . '_' . \date('YmdHi');
+        $replace = \str_replace('.00', '', $req->price_total);
+        $code = $replace . '_' . \date('YmdHi');
         DB::beginTransaction();
         try {
-            DB::table('carts')->update(['status' => 1]);
+            DB::table('carts')->update(['status' => '1']);
             $transaction = Transaction::create([
                 'code' => $code,
                 'date' => \now(),
                 'price_total' => $req->price_total,
-                'user_id' => \auth()->user()->getAuthIdentifierName()
+                'user_id' => \auth()->user()->getAuthIdentifier()
             ]);
             DB::commit();
-            return \back()->with('msg', "Berhasil melakukan transaksi dengan code transaksi $transaction->code");
+            return \back()->with('msg', "Berhasil melakukan transaksi dengan kode transaksi $transaction->code");
         } catch (Exception $e) {
             DB::rollBack();
             return \back()->with('msg', 'Something Went Wrong!, tidak berhasil merubah data!!' . $e);

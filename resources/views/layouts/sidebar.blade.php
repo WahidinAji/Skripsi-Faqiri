@@ -34,7 +34,7 @@
             <span>Transactions</span></a>
     </li>
     <li class="nav-item {{ (request()->is('carts*')) ? 'active' : null }}">
-        <a class="nav-link" href="{{ route('carts') }}">
+        <a class="nav-link" href="{{ route('carts.index') }}">
             <i class="fas fa-grin-beam"></i>
             <span>Carts</span></a>
     </li>

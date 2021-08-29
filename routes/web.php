@@ -31,6 +31,4 @@ Route::get('tes', function () {
 });
 Route::resource('items', ItemController::class);
 Route::resource('transactions', TransactionController::class);
-
-Route::get('carts', [CartController::class, 'index'])->name('carts');
-Route::post('carts', [CartController::class, 'store'])->name('carts.post');
+Route::resource('carts', CartController::class);
