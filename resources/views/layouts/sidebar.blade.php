@@ -23,15 +23,15 @@
             <span>Dashboard</span></a>
     </li>
     @else
-    <li class="nav-item {{ (request()->is('items*')) ? 'active' : null }}">
-        <a class="nav-link" href="{{ route('items.index') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
-    </li>
     <li class="nav-item {{ (request()->is('transactions*')) ? 'active' : null }}">
         <a class="nav-link" href="{{ route('transactions.index') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Transactions</span></a>
+            <span>Dashboard</span></a>
+    </li>
+    <li class="nav-item {{ (request()->is('items*')) ? 'active' : null }}">
+        <a class="nav-link" href="{{ route('items.index') }}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Items</span></a>
     </li>
     <li class="nav-item {{ (request()->is('carts*')) ? 'active' : null }}">
         <a class="nav-link" href="{{ route('carts.index') }}">

@@ -20,7 +20,7 @@ class CartController extends Controller
         $items = Item::all();
         $carts = Cart::with('items')->where('status', '0')->get();
         $sum = Cart::select(DB::raw("sum(IF(status = '0',price,0)) as sum"))->get();
-        return \view('create', \compact('items', 'carts', 'sum'));
+        return \view('carts.index', \compact('items', 'carts', 'sum'));
     }
 
     /**
