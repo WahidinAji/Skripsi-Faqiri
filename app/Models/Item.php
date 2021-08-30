@@ -13,12 +13,8 @@ class Item extends Model
     protected $guarded = ['id'];
     public $timestamps = true;
 
-    public function transactions()
+    public function carts()
     {
-        return $this->hasOne(Transaction::class);
-    }
-    public function transactionsMany()
-    {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(Cart::class, 'item_id', 'id');
     }
 }

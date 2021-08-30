@@ -10,9 +10,9 @@
             @method('PUT')
             @csrf
             <div class="form-group row">
-                <label for="name" class="col-sm-2 col-form-label">Name</label>
+                <label for="code" class="col-sm-2 col-form-label">Kode Barang</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" value="{{ old('name') ? old('name') : $item->name }}">
+                    <input type="text" class="form-control @error('code') is-invalid @enderror" name="code" id="code" value="{{ old('code') ? old('code') : $item->code }}">
                 </div>
             </div>
             <div class="form-group row">
@@ -22,9 +22,9 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="code" class="col-sm-2 col-form-label">Kode Barang</label>
+                <label for="price" class="col-sm-2 col-form-label">Harga Barang</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control @error('code') is-invalid @enderror" name="code" id="code" value="{{ old('code') ? old('code') : $item->code }}">
+                    <input type="text" class="form-control @error('price') is-invalid @enderror" name="price" id="price" value="{{ old('price') ? old('price') : $item->price }}">
                 </div>
             </div>
             <div class="form-group row">
@@ -34,9 +34,9 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="price" class="col-sm-2 col-form-label">Harga Barang</label>
+                <label for="category" class="col-sm-2 col-form-label">Kategori</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control @error('price') is-invalid @enderror" name="price" id="price" value="{{ old('price') ? old('price') : $item->price }}">
+                    <input type="text" class="form-control @error('category') is-invalid @enderror" name="category" id="category" value="{{ old('price') ? old('category') : $item->category }}">
                 </div>
             </div>
             <div class="form-group row">

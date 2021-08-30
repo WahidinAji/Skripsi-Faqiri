@@ -17,10 +17,19 @@ class CartController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
+        // \dd(\request()->all());
+        $categories = DB::table('items')
+            ->select(DB::raw('count(id) as id, category'))
+            ->groupBy('category')
+            ->get();
+        $items = Item::where('category', 'herbivora')->select('id', 'name', 'price', 'type', 'stock')->get();
+        if (\request()->has('category')) {
+            $category = \request('category');
+            $items = Item::where('category', $category)->select('id', 'name', 'price', 'type', 'stock')->get();
+        }
         $carts = Cart::with('items')->where('status', '0')->get();
         $sum = Cart::select(DB::raw("sum(IF(status = '0',price,0)) as sum"))->get();
-        return \view('carts.index', \compact('items', 'carts', 'sum'));
+        return \view('carts.index', \compact('categories', 'items', 'carts', 'sum'));
     }
 
     /**

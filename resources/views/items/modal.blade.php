@@ -51,6 +51,12 @@
                             <input type="text" class="form-control @error('stock') is-invalid @enderror" id="inputInformation" value="{{ old('stock') }}" name="stock">
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="inputCategory" class="col-sm-2 col-form-label">Kategori</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control @error('category') is-invalid @enderror" id="inputCategory" value="{{ old('category') }}" name="category">
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer pb-0">
                     <button type="submit" class="btn btn-primary">Save</button>

@@ -18,6 +18,7 @@ class CreateItemsTable extends Migration
             $table->string('name');
             $table->string('code');
             $table->decimal('price', 16, 2);
+            $table->string('category')->nullable();
             $table->enum('type', ['box', 'unit'])->default('unit');
             $table->unsignedBigInteger('stock')->default(0);
             $table->timestamps();

@@ -35,11 +35,15 @@
                 <form action="{{ url()->current() }}">
                     <div class="form-row">
                         <div class="col col-md-7 text-right">
-                            <input class="form-control form-control-sm" id="daterange" type="text" name="daterange" value="{{ request('daterange') }}"/>
+                            <select name="category" id="category" class="form-control form-control-sm">
+                                @foreach ($categories as $c)
+                                <option value="{{ $c->category }}" {{ $c->category == request('category') ? "selected" : null }}>{{ $c->category }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col col-md-5 text-right">
                             <button type="submit" class="btn btn-sm btn-info">urutkan</button>
-                            <a href="{{ route('items.index') }}" class="btn btn-sm btn-primary">clear</a>
+                            <a href="{{ route('carts.index') }}" class="btn btn-sm btn-primary">clear</a>
                         </div>
                     </div>
                 </form>
@@ -97,14 +101,14 @@
                 @endforelse
             </tbody>
         </table>
-        <table class="table table-sm" id="dataTable">
+        <table class="table table-sm" id="dataTable" width="100%" cellspacing="0">
             <thead>
                 <tr class="text-dark">
                     <th class="align-middle" scope="col">#</th>
                     <th class="align-middle" scope="col">Nama</th>
                     <th class="align-middle" scope="col">Harga <small><strong>Rp.</strong></small></th>
-                    <th class="align-middle" scope="col" colspan="2">Jumlah</th>
-                    <th class="align-middle" scope="col">Action</th>
+                    <th class="align-middle" scope="col">Jumlah</th>
+                    <th class="align-middle" scope="col" colspan="2">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -144,8 +148,7 @@
                     @foreach ($sum as $cart)
                     <tr>
                         <th colspan="2"><strong>Total Harga</strong></th>
-                        <th><strong id="money">{{ $cart->sum }}</strong></th>
-                        <th colspan="2"></th>
+                        <th colspan="3"><strong id="money">{{ $cart->sum }}</strong></th>
                         <th>
                             <input type="hidden" name="price_total" value="{{ $cart->sum }}">
                             <button onclick="return confirm('Selesaikan transaksi?')" class="btn btn-sm btn-success">Selesai</button>

@@ -9,7 +9,6 @@
     }
 </style>
 @section('main-content')
-{{-- <h1 class="h3 mb-4 text-gray-800">Items Page</h1> --}}
 @if($errors->any())
 <div class="row align-items-start m-0">
     @foreach ($errors->all() as $error)
@@ -36,7 +35,11 @@
                 <form action="{{ url()->current() }}">
                     <div class="form-row">
                         <div class="col col-md-7 text-right">
-                            <input class="form-control form-control-sm" id="daterange" type="text" name="daterange" value="{{ request('daterange') }}"/>
+                            <select name="category" id="category" class="form-control form-control-sm">
+                                @foreach ($categories as $c)
+                                <option value="{{ $c->category }}" {{ $c->category == request('category') ? "selected" : null }}>{{ $c->category }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col col-md-5 text-right">
                             <button type="submit" class="btn btn-sm btn-info">urutkan</button>

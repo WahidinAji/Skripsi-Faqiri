@@ -27,6 +27,7 @@ class ItemFactory extends Factory
             'price' => $this->faker->numberBetween(1000, 99000),
             'type' => $this->faker->randomElement(['box', 'unit']),
             'stock' => $this->faker->numberBetween(0, 100),
+            'category' => $this->faker->randomElement(['herbivora', 'karnivora', 'omnivora']),
             'created_at' => $this->faker->dateTimeThisMonth,
             'updated_at' => $this->faker->dateTimeThisMonth
         ];

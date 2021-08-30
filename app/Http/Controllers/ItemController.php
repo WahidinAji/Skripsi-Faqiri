@@ -6,6 +6,7 @@ use App\Http\Requests\ItemRequest;
 use App\Models\Item;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
@@ -20,21 +21,16 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::orderBy('id', 'DESC')->take(50)->get();
-        if (\request()->has('daterange')) {
-            $date = \explode("- ", \request('daterange'));
-            $from = Carbon::parse($date[0])->format('Y-m-d H:i:s');
-            $to = Carbon::parse($date[1])->format('Y-m-d H:i:s');
-            $date1 = \date_create($from);
-            $date2 = \date_create($to);
-            $interval = \date_diff($date1, $date2);
-            if ($interval->days > 30) {
-                $days = $interval->days + 1;
-                return \back()->with(['msg' => "anda menginput range waktu sebanyak $days hari, range waktu tidak boleh lebih dari 31 hari."]);
-            }
-            $items = Item::whereBetween('created_at', [$from, $to])->get();
+        $categories = DB::table('items')
+            ->select(DB::raw('count(id) as id, category'))
+            ->groupBy('category')
+            ->get();
+        $items = Item::where('category', 'herbivora')->select('id', 'name', 'price', 'type', 'stock')->get();
+        if (\request()->has('category')) {
+            $category = \request('category');
+            $items = Item::where('category', $category)->select('id', 'name', 'price', 'type', 'stock')->get();
         }
-        return \view('items.index', \compact('items'));
+        return \view('items.index', \compact('items', 'categories'));
     }
 
     /**
