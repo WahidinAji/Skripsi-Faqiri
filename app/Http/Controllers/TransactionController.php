@@ -37,9 +37,10 @@ class TransactionController extends Controller
             }
             $transactions = Transaction::with('items')->whereBetween('created_at', [$from, $to])->get();
         }
-        
+        // DB::enableQueryLog();
         $transactions = Transaction::select(DB::raw("count('id') as id, MONTH(date) month_, sum(price_total) as price"))->groupBy('month_')->get();
-        $trans = Transaction::select(DB::raw("count('id') as id, MONTH(date) month_, YEAR(date) as year_, sum(price_total) as price"))->groupBy('month_', 'year_')->get();
+        $trans = Transaction::select(DB::raw("count('id') as id, MONTH(date) month_, YEAR(date) as year_, sum(price_total) as price"))->groupBy('month_', 'year_')->whereYear('date', 2020)->get();
+        // \dd(DB::getQueryLog($trans));
         return \view('transactions.index', \compact('transactions', 'trans'));
     }
 

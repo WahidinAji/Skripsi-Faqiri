@@ -80,9 +80,9 @@
     <!-- Bar Chart Example -->
 <script>
     const json_year = {!! $trans !!};
-    const mapyear = json_year.map(element => element.year_);
-    const result = mapyear.filter(year => year == 2020);
-    console.log(result);
+    const mapyear = json_year.map(element => element);
+    // const result = mapyear.filter(year => year == 2020);
+    console.log(mapyear);
     const json_bar = {!! $transactions !!};
     const map_bar = json_bar.map(element => element.price);
     console.log(map_bar);
