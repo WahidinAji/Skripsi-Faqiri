@@ -20,7 +20,6 @@ class CreateTransactionsTable extends Migration
             $table->decimal('price_total', 16, 2);
             $table->foreignId('user_id')->nullable()->constrained();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
