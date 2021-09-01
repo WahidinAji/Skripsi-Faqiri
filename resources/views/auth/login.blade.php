@@ -1,17 +1,8 @@
 @extends('layouts.main')
 @section('main-content')
-{{-- @if($errors->any())
-    @foreach ($errors->all() as $error)
-    <div class="alert alert-success alert-block">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        <strong>{{ $error }}</strong>
-    </div>
-    @endforeach
-@endif --}}
 <div class="container">
     <!-- Outer Row -->
     <div class="row justify-content-center">
-
         <div class="col-xl-10 col-lg-12 col-md-9 p-0">
             <div class="row align-items-center m-0">
                 @if($errors->any())
@@ -41,6 +32,7 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                 </div>
+                                @guest
                                 <form class="user" method="POST" action="{{ route('login') }}">
                                     @csrf
                                     <div class="form-group">
@@ -64,6 +56,7 @@
                                     </button>
                                     <hr>
                                 </form>
+                                @endguest
                             </div>
                         </div>
                     </div>
