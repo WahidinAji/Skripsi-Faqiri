@@ -1,209 +1,341 @@
 @extends('layouts.main')
 @section('title','Transactions')
-@section('style')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/daterangepicker.css') }}" />
-<style>
-    i.text-success, i.text-secondary{
-        font-size: x-large;
-    }
-    fieldset.scheduler-border {
-        border: 1px groove #ddd !important;
-        padding: 0 1.4em 1.4em 1.4em !important;
-        margin: 0 0 1.5em 0 !important;
-        -webkit-box-shadow:  0px 0px 0px 0px #000;
-                box-shadow:  0px 0px 0px 0px #000;
-    }
-
-    legend.scheduler-border {
-        font-size: 1.2em !important;
-        font-weight: bold !important;
-        text-align: left !important;
-    }
-</style>
 @section('main-content')
-{{-- <h1 class="h3 mb-4 text-gray-800">Items Page</h1> --}}
-@if($errors->any())
-<div class="row align-items-start m-0">
-    @foreach ($errors->all() as $error)
-    <div class="alert alert-danger alert-dismissible fade show mr-2" role="alert" aria-live="polite" aria-atomic="true"  data-delay="50000">
-        {{ $error }}
-        <div type="button" class="close" data-dismiss="alert">
-            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-backspace-fill"
-                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                    d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 2 0 0 0 2-2V3zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0 1-.707-.708L7.976 8 5.829 5.854z" />
-            </svg>
+<div class="row">
+    <div class="col-xl-8 col-lg-7">
+        <!-- Bar Chart -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-bar">
+                    <canvas id="myBarChartYear"></canvas>
+                </div>
+                <hr>
+                Styling for the bar chart can be found in the
+                <code>/js/demo/chart-bar-demo.js</code> file.
+            </div>
         </div>
     </div>
-    @endforeach
-</div>
-@endif
-<div class="card">
-    <div class="card-header pb-0">
-        <div class="row">
-            <div class="col col-sm-7">
-                <h6 class="m-0 font-weight-bold text-primary">DataTables Transactions</h6>
+    <!-- Donut Chart -->
+    <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
             </div>
-            <div class="col col-sm-5 text-right">
-                <form action="{{ url()->current() }}">
-                    <div class="form-row">
-                        <div class="col col-md-7 text-right">
-                            <input class="form-control form-control-sm" id="daterange" type="text" name="daterange" value="{{ request('daterange') }}"/>
-                        </div>
-                        <div class="col col-md-5 text-right">
-                            <button type="submit" class="btn btn-sm btn-info">urutkan</button>
-                            <a href="{{ route('transactions.index') }}" class="btn btn-sm btn-primary">clear</a>
-                        </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="chart-pie pt-4">
+                    <canvas id="myPieChart"></canvas>
+                </div>
+                <hr>
+                Styling for the donut chart can be found in the
+                <code>/js/demo/chart-pie-demo.js</code> file.
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <!-- Bar Chart -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-2">
+                <div class="row">
+                    <div class="col col-sm-7 mt-2">
+                        <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
                     </div>
-                </form>
+                    <div class="col col-sm-5 text-right">
+                        <form action="{{ url()->current() }}">
+                            <div class="form-row">
+                                <div class="col col-md-7 text-right">
+                                    <input class="form-control form-control-sm" id="daterange" type="text" name="daterange" value="{{ request('daterange') }}"/>
+                                </div>
+                                <div class="col col-md-5 text-right">
+                                    <button type="submit" class="btn btn-sm btn-info">urutkan</button>
+                                    <a href="{{ route('transactions.index') }}" class="btn btn-sm btn-primary">clear</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart-bar">
+                    <canvas id="myBarChart"></canvas>
+                </div>
+                <hr>
+                Styling for the bar chart can be found in the
+                <code>/js/demo/chart-bar-demo.js</code> file.
             </div>
         </div>
-    </div>
-    <div class="card-body">
-        <table class="table" id="dataTable" width="100%" cellspacing="0">
-            <thead>
-                <tr class="text-dark">
-                    <th class="align-middle" scope="col">#</th>
-                    <th class="align-middle" scope="col">Kode</th>
-                    <th class="align-middle" scope="col">Tanggal</th>
-                    <th class="align-middl" scope="col">Harga <small>(Rp.)</small></th>
-                    <th class="align-middl" scope="col">Jumlah</th>
-                    <th class="align-middle text-center" scop5e="col">Action</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th class="align-middle" scope="col">#</th>
-                    <th class="align-middle" scope="col">Barang</th>
-                    <th class="align-middle" scope="col" colspan="2">Transaksi</th>
-                    <th class="align-middle" scope="col" colspan="2">Total</th>
-                    <th class="align-middle text-center" scope="col">Action</th>
-                </tr>
-            </tfoot>
-            <tbody>
-                @forelse ($transactions as $transaction)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $transaction->code }}</td>
-                    <td>{{ $transaction->date }}</td>
-                    <td id="money">{{ $transaction->price_total }}</td>
-                    <td>{{ $transaction->items_total }}</td>
-                    <td class="text-center">
-                        {{-- <a href="{{ route('items.edit',$transaction->id) }}" class="btn btn-sm btn-primary">
-                            Edit
-                        </a>
-                        <form action="{{ route('items.destroy',$transaction->id) }}" class="btn btn-sm btn-transparent p-0 m-0" method="POST">
-                            @method('DELETE')
-                            @csrf
-                            <button class="btn btn-sm btn-danger">Delete</button>
-                        </form> --}}
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                            <label class="custom-control-label" for="customSwitch1">Toggle</label>
-                        </div>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="7" class="text-center">Data kosong!!</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-        <div class="row mt-2">
-            <div class="col align-middle">
-                <button type="button" class="btn btn-sm btn-success btn-circle p-0" data-toggle="modal" data-target="#myModal">
-                    <i style="font-size: 170%" class="fas fa-plus-circle"></i>
-                </button>
-                <a href="{{ route('transactions.create') }}" class="btn btn-sm btn-danger btn-circle p-0">
-                    <i style="font-size: 170%" class="fas fa-plus-circle"></i>
-                </a>
-            </div>
-        </div>
-
-        <div id="project-label">Select a project (type &quot;j&quot; for a start):</div>
-<img id="project-icon" src="images/transparent_1x1.png" class="ui-state-default" alt>
-<input id="project">
-<input type="hidden" id="project-id">
-<p id="project-description"></p>
-
     </div>
 </div>
-@include('transactions.modal')
 @endsection
 @push('script')
+    <!-- Page level plugins -->
+<script src="{{ asset('assets/vendor/chart.js/Chart.min.js') }}"></script>
+    <!-- Page level Chart -->
+    <!-- Bar Chart Example -->
 <script>
-    $( function() {
-      var projects = [
-        {
-          value: "jquery",
-          label: "jQuery",
-          desc: "the write less, do more, JavaScript library",
-          icon: "jquery_32x32.png"
-        },
-        {
-          value: "jquery-ui",
-          label: "jQuery UI",
-          desc: "the official user interface library for jQuery",
-          icon: "jqueryui_32x32.png"
-        },
-        {
-          value: "sizzlejs",
-          label: "Sizzle JS",
-          desc: "a pure-JavaScript CSS selector engine",
-          icon: "sizzlejs_32x32.png"
-        }
-      ];
+    const json_year = {!! $trans !!};
+    const mapyear = json_year.map(element => element.year_);
+    const result = mapyear.filter(year => year == 2020);
+    console.log(result);
+    const json_bar = {!! $transactions !!};
+    const map_bar = json_bar.map(element => element.price);
+    console.log(map_bar);
 
-      $( "#project" ).autocomplete({
-        minLength: 0,
-        source: projects,
-        focus: function( event, ui ) {
-          $( "#project" ).val( ui.item.label );
-          return false;
-        },
-        select: function( event, ui ) {
-          $( "#project" ).val( ui.item.label );
-          $( "#project-id" ).val( ui.item.value );
-          $( "#project-description" ).html( ui.item.desc );
-          $( "#project-icon" ).attr( "src", "images/" + ui.item.icon );
-
-          return false;
+    function number_format(number, decimals, dec_point, thousands_sep) {
+        // *     example: number_format(1234.56, 2, ',', ' ');
+        // *     return: '1 234,56'
+        number = (number + '').replace(',', '').replace(' ', '');
+        var n = !isFinite(+number) ? 0 : +number,
+            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+            s = '',
+            toFixedFix = function(n, prec) {
+            var k = Math.pow(10, prec);
+            return '' + Math.round(n * k) / k;
+            };
+        // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+        if (s[0].length > 3) {
+            s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
         }
-      })
-      .autocomplete( "instance" )._renderItem = function( ul, item ) {
-        return $( "<li>" )
-          .append( "<div>" + item.label + "<br>" + item.desc + "</div>" )
-          .appendTo( ul );
-      };
-    } );
-</script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<script>
-    $('#daterange').daterangepicker();
-    $('#daterange').on('apply.daterangepicker', function(ev, picker) {
-        let startDate = picker.startDate.format('YYYY-MM-DD');
-        let endDate = picker.endDate.format('YYYY-MM-DD')
-        console.log(startDate);
-        console.log(endDate);
+        if ((s[1] || '').length < prec) {
+            s[1] = s[1] || '';
+            s[1] += new Array(prec - s[1].length + 1).join('0');
+        }
+        return s.join(dec);
+    }
+    var ctx = document.getElementById("myBarChart");
+    var myBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+            datasets: [{
+            label: "Revenue",
+            backgroundColor: "#4e73df",
+            hoverBackgroundColor: "#2e59d9",
+            borderColor: "#4e73df",
+            data: map_bar,
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    left: 10,
+                    right: 25,
+                    top: 25,
+                    bottom: 0
+                }
+            },
+            scales: {
+                xAxes: [{
+                    time: {
+                    unit: 'month'
+                    },
+                    gridLines: {
+                    display: false,
+                    drawBorder: false
+                    },
+                    ticks: {
+                    maxTicksLimit: 12
+                    },
+                    maxBarThickness: 25,
+                }],
+                yAxes: [{
+                    ticks: {
+                    min: 0,
+                    max: Math.max(...map_bar),
+                    maxTicksLimit: 5,
+                    padding: 10,
+                    // Include a dollar sign in the ticks
+                    callback: function(value, index, values) {
+                        return 'Rp. ' + number_format(value);
+                    }
+                    },
+                    gridLines: {
+                    color: "rgb(234, 236, 244)",
+                    zeroLineColor: "rgb(234, 236, 244)",
+                    drawBorder: false,
+                    borderDash: [2],
+                    zeroLineBorderDash: [2]
+                    }
+                }],
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                titleMarginBottom: 10,
+                titleFontColor: '#6e707e',
+                titleFontSize: 14,
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                caretPadding: 10,
+                callbacks: {
+                    label: function(tooltipItem, chart) {
+                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                    return datasetLabel + ': Rp. ' + number_format(tooltipItem.yLabel);
+                    }
+                }
+            },
+        }
     });
 </script>
 <script>
-    $('#myModal').modal('enable')
-</script>
-<script>
-    let x = document.querySelectorAll("#money");
-    for (let i = 0, len = x.length; i < len; i++) {
-        let num = Number(x[i].innerHTML)
-                  .toLocaleString('ID');
-        x[i].innerHTML = num;
-        x[i].classList.add("currSign");
+    const json_bar = {!! $transactions !!};
+    const map_bar = json_bar.map(element => element.price);
+    console.log(map_bar);
+    function number_format(number, decimals, dec_point, thousands_sep) {
+        // *     example: number_format(1234.56, 2, ',', ' ');
+        // *     return: '1 234,56'
+        number = (number + '').replace(',', '').replace(' ', '');
+        var n = !isFinite(+number) ? 0 : +number,
+            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+            s = '',
+            toFixedFix = function(n, prec) {
+            var k = Math.pow(10, prec);
+            return '' + Math.round(n * k) / k;
+            };
+        // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+        if (s[0].length > 3) {
+            s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+        }
+        if ((s[1] || '').length < prec) {
+            s[1] = s[1] || '';
+            s[1] += new Array(prec - s[1].length + 1).join('0');
+        }
+        return s.join(dec);
     }
+    var ctx = document.getElementById("myBarChart");
+    var myBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+            datasets: [{
+            label: "Revenue",
+            backgroundColor: "#4e73df",
+            hoverBackgroundColor: "#2e59d9",
+            borderColor: "#4e73df",
+            data: map_bar,
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    left: 10,
+                    right: 25,
+                    top: 25,
+                    bottom: 0
+                }
+            },
+            scales: {
+                xAxes: [{
+                    time: {
+                    unit: 'month'
+                    },
+                    gridLines: {
+                    display: false,
+                    drawBorder: false
+                    },
+                    ticks: {
+                    maxTicksLimit: 12
+                    },
+                    maxBarThickness: 25,
+                }],
+                yAxes: [{
+                    ticks: {
+                    min: 0,
+                    max: Math.max(...map_bar),
+                    maxTicksLimit: 5,
+                    padding: 10,
+                    // Include a dollar sign in the ticks
+                    callback: function(value, index, values) {
+                        return 'Rp. ' + number_format(value);
+                    }
+                    },
+                    gridLines: {
+                    color: "rgb(234, 236, 244)",
+                    zeroLineColor: "rgb(234, 236, 244)",
+                    drawBorder: false,
+                    borderDash: [2],
+                    zeroLineBorderDash: [2]
+                    }
+                }],
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                titleMarginBottom: 10,
+                titleFontColor: '#6e707e',
+                titleFontSize: 14,
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                caretPadding: 10,
+                callbacks: {
+                    label: function(tooltipItem, chart) {
+                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                    return datasetLabel + ': Rp. ' + number_format(tooltipItem.yLabel);
+                    }
+                }
+            },
+        }
+    });
 </script>
+    <!-- Pie Chart Example -->
 <script>
-//     var baseElement = document.querySelector("p");
-// document.getElementById("output").innerHTML =
-//   (baseElement.querySelector("div span").innerHTML);
+    const json = {!! $transactions !!};
+    const map_ = json.map(element => element.price);
+    var ctx = document.getElementById("myPieChart");
+    var myPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+            datasets: [{
+            data: map_,
+            backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc','#a83232','#a85b32','#ffff57','#aeff57','#57ffa5','#57fff9','#57a0ff','#57a0ff','#e957ff'],
+            hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf','#a83232','#a85b32','#ffff57','#aeff57','#57ffa5','#57fff9','#57a0ff','#57a0ff','#e957ff'],
+            hoverBorderColor: "rgba(234, 236, 244, 1)",
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+            },
+            legend: {
+            display: false
+            },
+            cutoutPercentage: 80,
+        },
+    });
 </script>
 @endpush

@@ -25,25 +25,22 @@ class TransactionController extends Controller
     public function index()
     {
         // $transactions = Transaction::select(DB::raw("count('id')"))->groupBy('code')->take(5)->get();
-        // $transactions = Transaction::all();
-        // \dd($transactions);
-        $transactions = Transaction::with('items')->orderBy('id', 'DESC')->take(10)->get();
-
+        // $transactions = Transaction::with('items')->orderBy('id', 'DESC')->take(10)->get();
         if (\request()->has('daterange')) {
             $date = \explode("- ", \request('daterange'));
-            $from = Carbon::parse($date[0])->format('Y-m-d H:i:s');
-            $to = Carbon::parse($date[1])->format('Y-m-d H:i:s');
-            $date1 = \date_create($from);
-            $date2 = \date_create($to);
-            $interval = \date_diff($date1, $date2);
+            $from = \date_create(Carbon::parse($date[0])->format('Y-m-d H:i:s'));
+            $to = \date_create(Carbon::parse($date[1])->format('Y-m-d H:i:s'));
+            $interval = \date_diff($from, $to);
             if ($interval->days > 30) {
                 $days = $interval->days + 1;
                 return \back()->with(['msg' => "anda menginput range waktu sebanyak $days hari, range waktu tidak boleh lebih dari 31 hari."]);
             }
             $transactions = Transaction::with('items')->whereBetween('created_at', [$from, $to])->get();
         }
-        // dd($transactions);
-        return \view('transactions.index', \compact('transactions'));
+        
+        $transactions = Transaction::select(DB::raw("count('id') as id, MONTH(date) month_, sum(price_total) as price"))->groupBy('month_')->get();
+        $trans = Transaction::select(DB::raw("count('id') as id, MONTH(date) month_, YEAR(date) as year_, sum(price_total) as price"))->groupBy('month_', 'year_')->get();
+        return \view('transactions.index', \compact('transactions', 'trans'));
     }
 
     /**
@@ -64,10 +61,12 @@ class TransactionController extends Controller
      */
     public function store(Request $req)
     {
-        $replace = \str_replace('.00', '', $req->price_total);
-        $code = $replace . '_' . \date('YmdHi');
+        $code = \str_replace('.00', '', $req->price_total) . '_' . \date('Hi') . '_' . \uniqid();
+        // $code = \hash('md5', $replace);
+        // \dd($code, $replace);
         DB::beginTransaction();
         try {
+            DB::table('carts')->where('status', '0')->update(['code' => $code]);
             DB::table('carts')->update(['status' => '1']);
             $transaction = Transaction::create([
                 'code' => $code,
