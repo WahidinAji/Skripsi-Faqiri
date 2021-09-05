@@ -1,11 +1,19 @@
+## Composisiton
+```code
+PHP 7.4.19
+Composer 2.1.3
+MySQL 5.7.33
+Nginx 1.19.10 (optional)
+Laravel 8.53.1
+```
 ## Setup
 ```bash
-$ git clone https://github.com/WahidinAji/Skripsi-Faqiri.git faqiri
-$ cd faqiri
-$ composer install
-$ cp .env.example .env
-$ php artisan key:generate
-$ php artisan migrate --seed
+git clone https://github.com/WahidinAji/Skripsi-Faqiri.git faqiri
+cd faqiri
+composer install (optional `composer install --ignore-platform-req`)
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
 ```
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
