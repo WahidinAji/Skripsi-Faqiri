@@ -18,17 +18,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('home', function () {
-    return view('welcome');
-});
 Route::get('/', [AuthController::class, 'index']);
 Route::post('login', [AuthController::class, 'authenticate'])->name('login');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-
-Route::get('search-items', ItemSearch::class)->name('items.search');
-Route::get('tes', function () {
-    return view('tes');
-});
 Route::resource('items', ItemController::class);
 Route::resource('transactions', TransactionController::class);
 Route::resource('carts', CartController::class);

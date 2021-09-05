@@ -25,10 +25,10 @@ class ItemController extends Controller
             ->select(DB::raw('count(id) as id, category'))
             ->groupBy('category')
             ->get();
-        $items = Item::where('category', 'herbivora')->select('id', 'name', 'price', 'type', 'stock')->get();
+        $items = Item::where('category', 'herbivora')->select('id', 'code', 'name', 'price', 'type', 'stock')->get();
         if (\request()->has('category')) {
             $category = \request('category');
-            $items = Item::where('category', $category)->select('id', 'name', 'price', 'type', 'stock')->get();
+            $items = Item::where('category', $category)->select('id', 'code', 'name', 'price', 'type', 'stock')->get();
         }
         return \view('items.index', \compact('items', 'categories'));
     }

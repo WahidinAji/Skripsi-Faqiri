@@ -87,8 +87,8 @@
                     </td>
                     <td class="text-center">
                         <form action="{{ route('carts.store') }}" class="btn btn-sm btn-transparent p-0 m-0" method="POST">
-                            <input type="number" class="form-contro form-control-sm" name="total" placeholder="input jumlah" max="{{ $item->stock }}" maxlength="{{ $item->stock }}">
                             @csrf
+                            <input type="number" class="form-contro form-control-sm" name="total" placeholder="input jumlah" max="{{ $item->stock }}" maxlength="{{ $item->stock }}">
                             <input type="hidden" value="{{ $item->id }}" name="item_id">
                             <button type="submit" class="btn btn-sm btn-primary">Add</button>
                         </form>

@@ -20,6 +20,7 @@ class CreateCartsTable extends Migration
             $table->string('name')->nullable();
             $table->bigInteger('total')->nullable();
             $table->enum('status', [1, 0])->default(null);
+            $table->string('code')->nullable();
             $table->timestamps();
         });
     }

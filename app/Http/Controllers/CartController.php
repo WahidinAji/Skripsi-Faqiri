@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CartRequest;
 use App\Models\Cart;
 use App\Models\Item;
 use Exception;
@@ -22,10 +23,10 @@ class CartController extends Controller
             ->select(DB::raw('count(id) as id, category'))
             ->groupBy('category')
             ->get();
-        $items = Item::where('category', 'herbivora')->select('id', 'name', 'price', 'type', 'stock')->get();
+        $items = Item::where('category', 'herbivora')->select('id', 'code', 'name', 'price', 'type', 'stock')->get();
         if (\request()->has('category')) {
             $category = \request('category');
-            $items = Item::where('category', $category)->select('id', 'name', 'price', 'type', 'stock')->get();
+            $items = Item::where('category', $category)->select('id', 'code', 'name', 'price', 'type', 'stock')->get();
         }
         $carts = Cart::with('items')->where('status', '0')->get();
         $sum = Cart::select(DB::raw("sum(IF(status = '0',price,0)) as sum"))->get();
@@ -48,7 +49,7 @@ class CartController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CartRequest $request)
     {
         $item = Item::where('id', $request->item_id)->first();
         $invalid = $request->total > $item->stock || $request->total <= '0' || $request->total == null;
@@ -113,7 +114,7 @@ class CartController extends Controller
      * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cart $cart)
+    public function update(CartRequest $request, Cart $cart)
     {
         $total_cart = $cart->items->stock + $cart->total;
         $invalid = $request->total > $total_cart || $request->total == $cart->total || $request->total == null || $request->total <= '0';
