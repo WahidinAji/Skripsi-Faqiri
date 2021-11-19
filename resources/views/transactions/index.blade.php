@@ -36,7 +36,7 @@
     <div class="col-xl-8 col-lg-7">
         <div class="card shadow mb-4">
             <div class="card-header py-2">
-                <h6 class="m-0 font-weight-bold text-primary">DataTables Items</h6>
+                <h6 class="m-0 font-weight-bold text-primary">DataTables Laporan Transaksi</h6>
             </div>
             <div class="card-body">
                 <table class="table table-sm" id="dataTable" width="100%" cellspacing="0">
