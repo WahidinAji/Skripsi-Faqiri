@@ -21,16 +21,32 @@ class TransactionController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * $transactions = Transaction::select(DB::raw("count('id') as id, MONTH(date) month_, YEAR(date) as year_, sum(price_total) as price"))->groupBy('month_', 'year_');
+     *  $years = Transaction::select(DB::raw("count('id') as id, YEAR(date) as year_"))->groupBy('year_')->get();
+     *  if (\request()->has('years')) {
+     *      $year = \request('years');
+     *      $transactions = $transactions->whereYear('date', $year);
+     *  } else {
+     *      $transactions = $transactions->whereYear('date', 2021);
+     *  }
+     *  $transactions = $transactions->get();
      */
     public function index()
     {
-        $transactions = Transaction::select(DB::raw("count('id') as id, MONTH(date) month_, YEAR(date) as year_, sum(price_total) as price"))->groupBy('month_', 'year_')->whereYear('date', 2021)->get();
+        $transactions = Transaction::select(DB::raw("count('id') as total, MONTH(date) month_, YEAR(date) as year_, sum(price_total) as price"))->groupBy('month_', 'year_');
+        $days = Transaction::select('id', 'code', 'price_total', 'date')->orderBy('updated_at', 'desc');
         $years = Transaction::select(DB::raw("count('id') as id, YEAR(date) as year_"))->groupBy('year_')->get();
         if (\request()->has('years')) {
             $year = \request('years');
-            $transactions = Transaction::select(DB::raw("count('id') as total, MONTH(date) month_, YEAR(date) as year_, sum(price_total) as price"))->groupBy('month_', 'year_')->whereYear('date', $year)->get();
+            $transactions = $transactions->whereYear('date', $year);
+            $days = $days->whereYear('date', $year);
+        } else {
+            $transactions = $transactions->whereYear('date', 2021);
+            $days = $days->whereYear('date', 2021);
         }
-        return \view('transactions.index', \compact('transactions',  'years'));
+        $transactions = $transactions->get();
+        $days = $days->get();
+        return \view('transactions.index', \compact('transactions',  'years', 'days'));
     }
 
     /**
@@ -48,6 +64,7 @@ class TransactionController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * * Menu Carts proses setelah selesai, barang masuk ke laporan Dashboard.
      */
     public function store(Request $req)
     {
@@ -78,7 +95,8 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        return back();
+        // \dd($transaction->carts);
+        return view('transactions.show', compact('transaction'));
     }
 
     /**

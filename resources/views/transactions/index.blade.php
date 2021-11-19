@@ -1,20 +1,74 @@
 @extends('layouts.main')
 @section('title','Transactions')
 @section('main-content')
+{{-- <div class="card">
+    <div class="card-header py-2">
+        <h6 class="m-0 font-weight-bold text-primary">DataTables Items</h6>
+    </div>
+    <div class="card-body">
+        <table class="table" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr class="text-dark">
+                    <th class="align-middle" scope="col">#</th>
+                    <th class="align-middle" scope="col">Kode Transaksi</th>
+                    <th class="align-middl" scope="col">Harga <small><strong>Rp.</strong></small></th>
+                    <th class="align-middle text-center" scope="col">Tanggal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($days as $day)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $day->code }}</td>
+                    <td>{{ number_format($day->price_total,2,".",",") }}</td>
+                    <td>{{ $day->date }}</td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="4">Data kosong!!!</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div> --}}
 <div class="row">
     <div class="col-xl-8 col-lg-7">
-        <!-- Bar Chart -->
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+            <div class="card-header py-2">
+                <h6 class="m-0 font-weight-bold text-primary">DataTables Items</h6>
             </div>
             <div class="card-body">
-                <div class="chart-bar">
-                    <canvas id="myBarChart"></canvas>
-                </div>
-                <hr>
-                Styling for the bar chart can be found in the
-                <code>/js/demo/chart-bar-demo.js</code> file.
+                <table class="table table-sm" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr class="text-dark">
+                            <th class="align-middle" scope="col">#</th>
+                            <th class="align-middle" scope="col">Kode Transaksi</th>
+                            <th class="align-middl" scope="col">Harga <small><strong>Rp.</strong></small></th>
+                            <th class="align-middle text-center" scope="col">Tanggal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($days as $day)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $day->code }}</td>
+                            <td>{{ number_format($day->price_total,2,".",",") }}</td>
+                            <td>{{ $day->date }}</td>
+                            <td>
+                                <a href="{{ route('transactions.show',$day->id) }}" class="btn btn-outline-info btn-sm btn-circle" data-toggle="tooltip" data-placement="top" title="detail">
+                                    <i class="fas fa-info-circle"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4">Data kosong!!!</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -22,7 +76,7 @@
     <div class="col-xl-4 col-lg-5">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
-            <div class="card-header py-3">
+            <div class="card-header py-2">
                 <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
             </div>
             <!-- Card Body -->
@@ -72,13 +126,16 @@
                 </div>
                 <hr>
                 Total transaksi setiap bulannya tahun
-                <code>{{ request('years') ? '2021' : '2021' }}</code>.
+                <code>{{ request('years') ?? '2021' }}</code>.
             </div>
         </div>
     </div>
 </div>
 @endsection
 @push('script')
+<script>
+    $('[data-toggle="tooltip"]').tooltip()
+</script>
     <!-- Page level plugins -->
 <script src="{{ asset('assets/vendor/chart.js/Chart.min.js') }}"></script>
     <!-- Page level Chart -->
@@ -86,7 +143,52 @@
 <script>
     const json_bar = {!! $transactions !!};
     const map_price = json_bar.map(element => element.price);
+    const map_month = json_bar.map(element => element.month_);
     console.log(map_price);
+    const months_convert = Array.from(map_month, (e, i) => {
+            // console.log(e);
+            switch (e) {
+                case 1:
+                    i = e
+                    break;
+                case 2:
+                    i = e
+                    break;
+                case 3:
+                    i = e
+                    break;
+                case 4:
+                    i = e
+                    break;
+                case 5:
+                    i = e
+                    break;
+                case 6:
+                    i = e
+                    break;
+                case 7:
+                    i = e
+                    break;
+                case 8:
+                    i = e
+                    break;
+                case 9:
+                    i = e
+                    break;
+                case 10:
+                    i = e
+                    break;
+                case 11:
+                    i = e
+                    break;
+                case 12:
+                    i = e
+                    break;
+            }
+            return new Date(null, i, null).toLocaleDateString("en", {
+                month: "long"
+            });
+        });
     function number_format(number, decimals, dec_point, thousands_sep) {
         // *     example: number_format(1234.56, 2, ',', ' ');
         // *     return: '1 234,56'
@@ -115,7 +217,7 @@
     var myBarChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+            labels: months_convert,
             datasets: [{
                 label: "Revenue",
                 backgroundColor: "#4e73df",
@@ -195,13 +297,12 @@
 </script>
     <!-- Pie Chart Example -->
 <script>
-    const json = {!! $transactions !!};
-    const map_ = json.map(element => element.total);
+    const map_ = json_bar.map(element => element.total);
     var ctx = document.getElementById("myPieChart");
     var myPieChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+            labels: months_convert,
             datasets: [{
             data: map_,
             backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc','#a83232','#a85b32','#ffff57','#aeff57','#57ffa5','#57fff9','#57a0ff','#57a0ff','#e957ff'],
@@ -218,11 +319,11 @@
                 borderWidth: 1,
                 xPadding: 15,
                 yPadding: 15,
-                displayColors: false,
+                displayColors: true,
                 caretPadding: 10,
             },
             legend: {
-            display: false
+                display: false
             },
             cutoutPercentage: 80,
         },

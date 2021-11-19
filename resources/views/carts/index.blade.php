@@ -1,8 +1,6 @@
 @extends('layouts.main')
 @section('title','Carts')
 @section('style')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/daterangepicker.css') }}" />
-@section('style')
 <style>
     i.text-success, i.text-secondary{
         font-size: x-large;
@@ -28,7 +26,7 @@
 <div class="card">
     <div class="card-header pb-0">
         <div class="row">
-            <div class="col col-sm-7">
+            <div class="col col-sm-7 mt-2">
                 <h6 class="m-0 font-weight-bold text-primary">DataTables Items</h6>
             </div>
             <div class="col col-sm-5 text-right">
@@ -160,23 +158,8 @@
         </table>
     </div>
 </div>
-@include('items.modal')
 @endsection
 @push('script')
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<script>
-    $('#daterange').daterangepicker();
-    $('#daterange').on('apply.daterangepicker', function(ev, picker) {
-        let startDate = picker.startDate.format('YYYY-MM-DD');
-        let endDate = picker.endDate.format('YYYY-MM-DD')
-        console.log(startDate);
-        console.log(endDate);
-    });
-</script>
-<script>
-    $('#myModal').modal('enable')
-</script>
 <script>
     let x = document.querySelectorAll("#money");
     for (let i = 0, len = x.length; i < len; i++) {

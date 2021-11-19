@@ -15,10 +15,10 @@ class CartController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * Menu Carts halaman utama
      */
     public function index()
     {
-        // \dd(\request()->all());
         $categories = DB::table('items')
             ->select(DB::raw('count(id) as id, category'))
             ->groupBy('category')
@@ -48,6 +48,7 @@ class CartController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * Menu Carts proses add item.
      */
     public function store(CartRequest $request)
     {
@@ -113,6 +114,7 @@ class CartController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Http\Response
+     * * Menu Carts proses update pembelian item.
      */
     public function update(CartRequest $request, Cart $cart)
     {

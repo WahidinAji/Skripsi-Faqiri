@@ -17,4 +17,15 @@ class Item extends Model
     {
         return $this->hasMany(Cart::class, 'item_id', 'id');
     }
+    public function getTypeLabelAttribute()
+    {
+        switch ($this->type) {
+            case 'unit':
+                return 'satuan';
+                break;
+            case 'box':
+                return 'box';
+                break;
+        }
+    }
 }

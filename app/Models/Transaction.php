@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Transaction extends Model
 {
@@ -12,6 +13,6 @@ class Transaction extends Model
     public $timestamps = true;
     public function carts()
     {
-        return $this->belongsTo(Item::class, 'item_id', 'id');
+        return $this->hasMany(Cart::class, 'code', 'code');
     }
 }

@@ -17,7 +17,7 @@
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Login</span></a>
     </li>
-    <li class="nav-item {{ (request()->is('itemss*')) ? 'active' : null }}">
+    <li class="nav-item {{ (request()->is('items*')) ? 'active' : null }}">
         <a class="nav-link" href="{{ route('items.index') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
@@ -28,30 +28,22 @@
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
+    {{-- Daftar Barang => Items --}}
     <li class="nav-item {{ (request()->is('items*')) ? 'active' : null }}">
         <a class="nav-link" href="{{ route('items.index') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Items</span></a>
+            <i class="fas fa-store"></i>
+            <span>Daftar Barang</span></a>
     </li>
+    {{-- Transaksi => Carts --}}
     <li class="nav-item {{ (request()->is('carts*')) ? 'active' : null }}">
         <a class="nav-link" href="{{ route('carts.index') }}">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Transaksi</span></a>
+    </li>
+    {{-- <li class="nav-item {{ (request()->is('reports*')) ? 'active' : null }}">
+        <a class="nav-link" href="{{ route('carts.index') }}">
             <i class="fas fa-grin-beam"></i>
-            <span>Carts</span></a>
-    </li>
-    {{-- <li class="nav-item {{ (request()->is('admin/budgets*')) ? 'active' : null }}">
-        <a class="nav-link" href="{{ route('budgets.index') }}">
-            <i class="fas fa-hand-holding-usd"></i>
-            <span>Budgets</span></a>
-    </li>
-    <li class="nav-item {{ (request()->is('admin/teams*')) ? 'active' : null }}">
-        <a class="nav-link" href="{{ route('teams.index') }}">
-            <i class="fas fa-grin-beam"></i>
-            <span>Teams</span></a>
-    </li>
-    <li class="nav-item {{ (request()->is('admin/projects*')) ? 'active' : null }}">
-        <a class="nav-link" href="{{ route('projects.index') }}">
-            <i class="fas fa-tasks"></i>
-            <span>Projects</span></a>
+            <span>Report Transactions</span></a>
     </li> --}}
     @endguest
 

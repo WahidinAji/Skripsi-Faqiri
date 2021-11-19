@@ -78,13 +78,7 @@
                     <td>{{ $item->code }}</td>
                     <td>{{ $item->stock }}</td>
                     <td id="money">{{ $item->price }}</td>
-                    <td>
-                        @if($item->type == 'unit')
-                        satuan
-                        @else
-                        box
-                        @endif
-                    </td>
+                    <td>{{ $item->type_label }}</td>
                     <td class="text-center">
                         <a href="{{ route('items.edit',$item->id) }}" class="btn btn-sm btn-primary">
                             Edit
@@ -125,9 +119,6 @@
         console.log(startDate);
         console.log(endDate);
     });
-</script>
-<script>
-    $('#myModal').modal('enable')
 </script>
 <script>
     let x = document.querySelectorAll("#money");
