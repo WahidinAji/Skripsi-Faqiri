@@ -64,6 +64,7 @@ class CartController extends Controller
             $cart->status = '0';
             $item->stock = $item->stock - $request->total;
             $total = $request->total;
+          
             if (isset($item_id)) {
                 //total updating if $team_id is true
                 $total = $item_id->total + $request->total;

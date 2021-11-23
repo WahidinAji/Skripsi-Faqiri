@@ -60,6 +60,13 @@
                                 <a href="{{ route('transactions.show',$day->id) }}" class="btn btn-outline-info btn-sm btn-circle" data-toggle="tooltip" data-placement="top" title="detail">
                                     <i class="fas fa-info-circle"></i>
                                 </a>
+                                <form action="{{ route('transactions.destroy',$day->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" onclick="return confirm('Apakah anda yakin ingin menghapus transaksi ini ??')" class="btn btn-outline-danger btn-sm btn-circle" data-toggle="tooltip" data-placement="top" title="hapus">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         @empty

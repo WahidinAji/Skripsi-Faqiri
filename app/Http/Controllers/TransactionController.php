@@ -77,7 +77,9 @@ class TransactionController extends Controller
                 'code' => $code,
                 'date' => \now(),
                 'price_total' => $req->price_total,
-                'user_id' => \auth()->user()->getAuthIdentifier()
+                'cash' => $req->cash,
+                'kembalian' => $req->kembalian,
+                'user_id' => \auth()->user()->getAuthIdentifier(),
             ]);
             DB::commit();
             return \back()->with('msg', "Berhasil melakukan transaksi dengan kode transaksi $transaction->code");

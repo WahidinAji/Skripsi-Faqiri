@@ -54,6 +54,8 @@
                                             <th scope="col">#</th>
                                             <th scope="col">kategory</th>
                                             <th scope="col">harga</th>
+                                            <th scope="col">pembayaran</th>
+                                            <th scope="col">kembalian</th>
                                             <th scope="col">jumlah</th>
                                         </tr>
                                     </thead>
@@ -62,8 +64,10 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $cart->items->category }}</td>
-                                            <td>{{ $cart->price }}</td>
-                                            <td>{{ $cart->total }}</td>
+                                            <td>{{ number_format($cart->price) }}</td>
+                                            <td>{{ number_format($transaction->cash) }}</td>
+                                            <td>{{ number_format($transaction->kembalian) }}</td>
+                                            <td>{{ number_format($cart->total) }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -91,7 +95,7 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $cart->items->name }}</td>
                                             <td>{{ $cart->items->code }}</td>
-                                            <td>{{ $cart->items->price }}</td>
+                                            <td>{{ number_format($cart->items->price) }}</td>
                                             <td>{{ $cart->items->type_label }}</td>
                                         </tr>
                                         @endforeach

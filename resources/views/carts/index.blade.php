@@ -148,11 +148,24 @@
                         <th colspan="2"><strong>Total Harga</strong></th>
                         <th colspan="3"><strong id="money">{{ $cart->sum }}</strong></th>
                         <th>
-                            <input type="hidden" name="price_total" value="{{ $cart->sum }}">
-                            <button onclick="return confirm('Selesaikan transaksi?')" class="btn btn-sm btn-success">Selesai</button>
+                            <input type="hidden" name="price_total" value="{{ $cart->sum }}" id="price_total">
                         </th>
                     </tr>
                     @endforeach
+                    @csrf
+                    <tr>
+                        <th colspan="2"><strong>Cash</strong></th>
+                        <th>
+                            <input type="number" name="cash" value="0" id="cash">
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="2"><strong>Kembalian</strong></th>
+                        <th>
+                            <input type="number" name="kembalian" value="0" id="kembalian" readonly>  
+                            <br><br><button onclick="return confirm('Selesaikan transaksi?')" class="btn btn-sm btn-success">Selesai</button>
+                        </th>
+                    </tr>
                 </form>
             </tfoot>
         </table>
@@ -168,5 +181,18 @@
         x[i].innerHTML = num;
         x[i].classList.add("currSign");
     }
+
+    $("#cash").keyup(function (e) { 
+        e.preventDefault();
+        let pricetotal = $("#price_total").val();
+        let cash = $("#cash").val();
+
+        kembalian = cash - pricetotal;
+        
+       if(kembalian)
+       {
+            $("#kembalian").val(kembalian);
+       }
+    });
 </script>
 @endpush

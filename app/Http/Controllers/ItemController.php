@@ -25,6 +25,7 @@ class ItemController extends Controller
             ->select(DB::raw('count(id) as id, category'))
             ->groupBy('category')
             ->get();
+
         $items = Item::select('id', 'code', 'name', 'price', 'type', 'stock')->get();
         if (\request()->has('category')) {
             $category = \request('category');
