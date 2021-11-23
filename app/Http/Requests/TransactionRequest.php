@@ -25,11 +25,13 @@ class TransactionRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => [
-                'required', Rule::unique('transactions', 'code')->ignore($this->cart)
-            ],
-            'date' => 'required|date',
-            'price_total' => 'required|regex:/^\d+(\.\d{1,2})?$/'
+            // 'code' => [
+            //     'required', Rule::unique('transactions', 'code')->ignore($this->cart)
+            // ],
+            // 'date' => 'required|date',
+            'price_total' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'paying' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'refund' => 'nullable'
         ];
     }
 }

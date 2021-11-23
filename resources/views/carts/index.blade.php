@@ -5,6 +5,9 @@
     i.text-success, i.text-secondary{
         font-size: x-large;
     }
+    /* input#paying {
+        width: 21%;
+    } */
 </style>
 @section('main-content')
 @if($errors->any())
@@ -50,7 +53,7 @@
     </div>
     <span class="success" style="color:green; margin-top:10px; margin-bottom: 10px;"></span>
     <div class="card-body">
-        <table class="table" id="dataTable" width="100%" cellspacing="0">
+        <table class="table table-sm" id="dataTable" width="100%" cellspacing="0">
             <thead>
                 <tr class="text-dark">
                     <th class="align-middle" scope="col">#</th>
@@ -112,7 +115,7 @@
             <tbody>
                 @forelse ($carts as $cart)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
+                    <td width="5%">{{ $loop->iteration }}</td>
                     <td>{{ $cart->items->name }}</td>
                     <td id="money">{{ $cart->price }}</td>
                     <form action="{{ route('carts.update',$cart->id) }}" class="btn btn-sm btn-transparent p-0 m-0" method="POST">
@@ -136,7 +139,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td>Kosong</td>
+                    <td colspan="5" class="text-center">Kosong</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -146,8 +149,22 @@
                     @foreach ($sum as $cart)
                     <tr>
                         <th colspan="2"><strong>Total Harga</strong></th>
-                        <th colspan="3"><strong id="money">{{ $cart->sum }}</strong></th>
-                        <th>
+                        <th colspan="4"><strong id="money">{{ $cart->sum }}</strong></th>
+                    </tr>
+                    <tr>
+                        <th colspan="2"><strong>Dibayarkan</strong></th>
+                        <th width="15%">
+                            <input type="number" class="form-control form-control-sm @error('paying') is-invalid @enderror" value="{{ old('paying') }}" name="paying" id="paying">
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="2"><strong>Dikembalikan</strong></th>
+                        <th width="15%">
+                            <input type="number" class="form-control form-control-sm" value="{{ old('refund') }}" name="refund" id="refund">
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="3" class="text-right">
                             <input type="hidden" name="price_total" value="{{ $cart->sum }}">
                             <button onclick="return confirm('Selesaikan transaksi?')" class="btn btn-sm btn-success">Selesai</button>
                         </th>

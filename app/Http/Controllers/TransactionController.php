@@ -66,8 +66,14 @@ class TransactionController extends Controller
      * @return \Illuminate\Http\Response
      * * Menu Carts proses setelah selesai, barang masuk ke laporan Dashboard.
      */
-    public function store(Request $req)
+    public function store(TransactionRequest $req)
     {
+        if (empty($req->price_total)) {
+            return back()->with('msg', 'Silahkan tambah barang terlebih dahulu!!');
+        }
+        if ($req->paying < $req->price_total) {
+            return back()->with('msg', 'Uang yang dibayarkan harus sama dengan atau lebih besar dari total harga!!');
+        }
         $code = \str_replace('.00', '', $req->price_total) . '_' . \date('Hi') . '_' . \uniqid();
         DB::beginTransaction();
         try {
@@ -77,13 +83,15 @@ class TransactionController extends Controller
                 'code' => $code,
                 'date' => \now(),
                 'price_total' => $req->price_total,
+                'paying' => $req->paying,
+                'refund' => $req->refund,
                 'user_id' => \auth()->user()->getAuthIdentifier()
             ]);
             DB::commit();
             return \back()->with('msg', "Berhasil melakukan transaksi dengan kode transaksi $transaction->code");
         } catch (Exception $e) {
             DB::rollBack();
-            return \back()->with('msg', 'Something Went Wrong!, tidak berhasil merubah data!!' . $e);
+            return \back()->with('msg', 'Something Went Wrong!, tidak berhasil merubah data!!' . $e->getMessage());
         }
     }
 

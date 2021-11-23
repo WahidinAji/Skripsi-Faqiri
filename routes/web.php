@@ -19,9 +19,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [AuthController::class, 'index']);
-Route::post('login', [AuthController::class, 'authenticate'])->name('login');
-Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/', [AuthController::class, 'index']); //halama index
+Route::post('login', [AuthController::class, 'authenticate'])->name('login'); // url halaman logi
+Route::get('logout', [AuthController::class, 'logout'])->name('logout'); // url logout
+//url items => daftar barang
 Route::resource('items', ItemController::class);
+//url transactions untuk laporan transaksi => dashboard
 Route::resource('transactions', TransactionController::class)->except('create', 'edit');
+//url carts untuk input belanjaan => transaksi
 Route::resource('carts', CartController::class);
