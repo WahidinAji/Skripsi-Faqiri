@@ -84,7 +84,7 @@ class TransactionController extends Controller
                 'date' => \now(),
                 'price_total' => $req->price_total,
                 'paying' => $req->paying,
-                'refund' => $req->refund,
+                'refund' => $req->refund ?? '0',
                 'user_id' => \auth()->user()->getAuthIdentifier()
             ]);
             DB::commit();
