@@ -154,18 +154,18 @@
                     <tr>
                         <th colspan="2"><strong>Dibayarkan</strong></th>
                         <th width="15%">
-                            <input type="number" class="form-control form-control-sm @error('paying') is-invalid @enderror" value="{{ old('paying') }}" name="paying" id="paying">
+                            <input type="number" class="form-control form-control-sm @error('paying') is-invalid @enderror" value="{{ old('paying') }}" name="paying" id="cash">
                         </th>
                     </tr>
                     <tr>
                         <th colspan="2"><strong>Dikembalikan</strong></th>
                         <th width="15%">
-                            <input type="number" class="form-control form-control-sm" value="{{ old('refund') }}" name="refund" id="refund">
+                            <input type="number" class="form-control form-control-sm" name="refund" id="kembalian" readonly>
                         </th>
                     </tr>
                     <tr>
                         <th colspan="3" class="text-right">
-                            <input type="hidden" name="price_total" value="{{ $cart->sum }}">
+                            <input type="hidden" name="price_total" value="{{ $cart->sum }}" id="price_total">
                             <button onclick="return confirm('Selesaikan transaksi?')" class="btn btn-sm btn-success">Selesai</button>
                         </th>
                     </tr>
@@ -185,5 +185,17 @@
         x[i].innerHTML = num;
         x[i].classList.add("currSign");
     }
+    $("#cash").keyup(function (e) {
+        e.preventDefault();
+        let pricetotal = $("#price_total").val();
+        let cash = $("#cash").val();
+
+        kembalian = cash - pricetotal;
+
+       if(kembalian)
+       {
+            $("#kembalian").val(kembalian);
+       }
+    });
 </script>
 @endpush

@@ -71,7 +71,7 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $cart->items->category }}</td>
                                             <td>{{ number_format($cart->price, 2, ',', '.') }}</td>
-                                            <td>{{ number_format($cart->total, 2, ',', '.') }}</td>
+                                            <td>{{ $cart->total }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
