@@ -39,6 +39,10 @@
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Logout
                 </a>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addUserModal">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Add user
+                </a>
             </div>
         </li>
     </ul>

@@ -28,3 +28,5 @@ Route::resource('items', ItemController::class);
 Route::resource('transactions', TransactionController::class)->except('create', 'edit');
 //url carts untuk input belanjaan => transaksi
 Route::resource('carts', CartController::class);
+//url register
+Route::post('register',[AuthController::class,'registerUser'])->name('register');

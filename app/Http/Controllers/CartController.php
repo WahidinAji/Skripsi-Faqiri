@@ -6,7 +6,6 @@ use App\Http\Requests\CartRequest;
 use App\Models\Cart;
 use App\Models\Item;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
