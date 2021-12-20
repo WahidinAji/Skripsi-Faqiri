@@ -36,6 +36,7 @@
                     <div class="form-row">
                         <div class="col col-md-7 text-right">
                             <select name="category" id="category" class="form-control form-control-sm">
+                                <option>Pilih</option>
                                 @foreach ($categories as $c)
                                 <option value="{{ $c->category }}" {{ $c->category == request('category') ? "selected" : null }}>{{ $c->category }}</option>
                                 @endforeach
