@@ -38,7 +38,15 @@
                         <h5>Kode transaksi : {{ $transaction->code }}</h5>
                     </div>
                     <div class="col">
-                        <h5>Harga total : {{ $transaction->price_total }}</h5>
+                        <h5>Pembayaran : Rp. {{ number_format($transaction->paying, 2, ',', '.') }}</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h5>Harga total : Rp. {{ number_format($transaction->price_total, 2, ',', '.') }}</h5>
+                    </div>
+                    <div class="col">
+                        <h5>Kembalian : Rp. {{ number_format($transaction->refund, 2, ',', '.') }}</h5>
                     </div>
                 </div>
             </div>
@@ -62,8 +70,8 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $cart->items->category }}</td>
-                                            <td>{{ $cart->price }}</td>
-                                            <td>{{ $cart->total }}</td>
+                                            <td>{{ number_format($cart->price, 2, ',', '.') }}</td>
+                                            <td>{{ number_format($cart->total, 2, ',', '.') }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -86,12 +94,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($transaction->carts as $cart)
+                                        @foreach ($transaction->carts as $cart)""
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $cart->items->name }}</td>
                                             <td>{{ $cart->items->code }}</td>
-                                            <td>{{ $cart->items->price }}</td>
+                                            <td>{{ number_format($cart->items->price, 2, ',', '.') }}</td>
                                             <td>{{ $cart->items->type_label }}</td>
                                         </tr>
                                         @endforeach
