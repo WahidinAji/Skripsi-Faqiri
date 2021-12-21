@@ -4,7 +4,7 @@
             <form action="{{ route('items.store') }}" method="POST">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add new Item</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Tambah Barang Baru</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputInformation" class="col-sm-2 col-form-label">Stock Barang</label>
+                        <label for="inputInformation" class="col-sm-2 col-form-label">Stok Barang</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control @error('stock') is-invalid @enderror" id="inputInformation" value="{{ old('stock') }}" name="stock">
                         </div>

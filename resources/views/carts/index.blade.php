@@ -134,7 +134,7 @@
                         <form action="{{ route('carts.destroy',$cart->id) }}" class="btn btn-sm btn-transparent p-0 m-0" method="POST">
                             @method('DELETE')
                             @csrf
-                            <button type="submit" onclick="return confirm('Apakah anda yakin ingin mengahapus barang?')" class="btn btn-sm btn-outline-danger">Hapur barang</button>
+                            <button type="submit" onclick="return confirm('Apakah anda yakin ingin mengahapus barang?')" class="btn btn-sm btn-outline-danger">Hapus barang</button>
                         </form>
                     </td>
                 </tr>
@@ -147,19 +147,20 @@
             <tfoot>
                 <form action="{{ route('transactions.store') }}" method="POST">
                     @csrf
+                    <!-- UI pembayaran -->
                     @foreach ($sum as $cart)
                     <tr>
                         <th colspan="2"><strong>Total Harga</strong></th>
                         <th colspan="4"><strong id="money">{{ $cart->sum }}</strong></th>
                     </tr>
                     <tr>
-                        <th colspan="2"><strong>Dibayarkan</strong></th>
+                        <th colspan="2"><strong>Pembayaran</strong></th>
                         <th width="15%">
                             <input type="number" class="form-control form-control-sm @error('paying') is-invalid @enderror" value="{{ old('paying') }}" name="paying" id="cash">
                         </th>
                     </tr>
                     <tr>
-                        <th colspan="2"><strong>Dikembalikan</strong></th>
+                        <th colspan="2"><strong>Kembalian</strong></th>
                         <th width="15%">
                             <input type="number" class="form-control form-control-sm" name="refund" id="kembalian" readonly>
                         </th>
