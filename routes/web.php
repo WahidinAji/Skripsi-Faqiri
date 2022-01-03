@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AutoComplete\ItemSearch;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ReportPdf;
 use App\Http\Controllers\ReportTransaction;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -29,4 +30,6 @@ Route::resource('transactions', TransactionController::class)->except('create', 
 //url carts untuk input belanjaan => transaksi
 Route::resource('carts', CartController::class);
 //url register
-Route::post('register',[AuthController::class,'registerUser'])->name('register');
+Route::post('register', [AuthController::class, 'registerUser'])->name('register');
+
+Route::get('report-transaction-pdf', ReportPdf::class)->name('pdf');

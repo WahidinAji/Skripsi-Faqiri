@@ -35,8 +35,29 @@
 <div class="row">
     <div class="col-xl-8 col-lg-7">
         <div class="card shadow mb-4">
+            {{-- <a href="{{ route('pdf') }}" class="btn btn-primary">PDF</a> --}}
             <div class="card-header py-2">
-                <h6 class="m-0 font-weight-bold text-primary">DataTables Laporan Transaksi</h6>
+                <div class="row">
+                    <div class="col col-sm-8 mt-2">
+                        <h6 class="m-0 font-weight-bold text-primary">DataTables Laporan Transaksi</h6>
+                    </div>
+                    <div class="col col-sm-4 text-right">
+                        <form action="{{ route('pdf') }}" class="p-0">
+                            {{-- <input type="month" id="date" name="date" min="2020-01">
+                            <button type="submit" class="btn btn-sm btn-primary">PDF</button> --}}
+
+                            <div class="row m-0">
+                                <div class="col text-right">
+                                    <input type="month" id="date" name="date" min="2020-01" class="form-control">
+                                </div>
+                                <div class="col pr-0 pl-0 ml-0 text-right">
+                                    <button type="submit" class="btn btn-primary">PDF</button>
+                                </div>
+                            </div>
+                        </form>
+                        {{-- <a href="{{ route('pdf') }}" class="btn btn-primary">PDF</a> --}}
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <table class="table table-sm" id="dataTable" width="100%" cellspacing="0">
