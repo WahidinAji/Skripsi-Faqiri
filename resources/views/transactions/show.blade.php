@@ -54,7 +54,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="card mt-2">
-                            <div class="card-body">
+                            <div class="card-body"> 
                                 <h5 class="card-title">Transaksi</h5>
                                 <table class="table table-sm table-borderless">
                                     <thead>
@@ -94,7 +94,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($transaction->carts as $cart)""
+                                        @foreach ($transaction->carts as $cart)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $cart->items->name }}</td>
