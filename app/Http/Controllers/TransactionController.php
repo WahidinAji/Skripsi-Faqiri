@@ -64,6 +64,7 @@ class TransactionController extends Controller
      */
     public function store(TransactionRequest $req)
     {
+        dd($req->all());
         if (empty($req->price_total)) {
             return back()->with('msg', 'Silahkan tambah barang terlebih dahulu!!');
         }

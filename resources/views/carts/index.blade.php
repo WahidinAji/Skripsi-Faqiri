@@ -187,6 +187,7 @@
         x[i].innerHTML = num;
         x[i].classList.add("currSign");
     }
+
     $("#cash").keyup(function (e) {
         e.preventDefault();
         let pricetotal = $("#price_total").val();
@@ -194,10 +195,17 @@
 
         kembalian = cash - pricetotal;
 
-       if(kembalian)
-       {
+        if(cash == pricetotal){
+            $("#kembalian").val('0');
+        } else if(cash < pricetotal){
             $("#kembalian").val(kembalian);
-       }
+        } else if(kembalian){
+            $("#kembalian").val(kembalian);
+        }
+    //    if(kembalian)
+    //    {
+    //         $("#kembalian").val(kembalian);
+    //    }
     });
 </script>
 @endpush
