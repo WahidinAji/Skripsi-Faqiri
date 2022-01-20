@@ -10,12 +10,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group row">
+                    {{-- <div class="form-group row">
                         <label for="inputCode" class="col-sm-2 col-form-label">Kode Barang</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control @error('code') is-invalid @enderror" id="inputCode" value="{{ old('code') }}" name="code">
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="form-group row">
                         <label for="inputName" class="col-sm-2 col-form-label">Nama Barang</label>
                         <div class="col-sm-10">

@@ -9,12 +9,12 @@
         <form enctype="multipart/form-data" method="POST" action="{{ route('items.update',$item->id) }}">
             @method('PUT')
             @csrf
-            <div class="form-group row">
+            {{-- <div class="form-group row">
                 <label for="code" class="col-sm-2 col-form-label">Kode Barang</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control @error('code') is-invalid @enderror" name="code" id="code" value="{{ old('code') ? old('code') : $item->code }}">
                 </div>
-            </div>
+            </div> --}}
             <div class="form-group row">
                 <label for="name" class="col-sm-2 col-form-label">Name Barang</label>
                 <div class="col-sm-10">
