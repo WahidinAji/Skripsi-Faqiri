@@ -28,6 +28,25 @@ class ItemController extends Controller
             $category = \request('category');
             $items = Item::where('category', $category)->select('id', 'code', 'name', 'price', 'type', 'stock')->get();
         }
+
+        $arr = [
+            0 => [
+                'provider' =>'XL',
+                'nomor' => 123,
+            ],
+            1 => [
+                'provider' =>'XL',
+                'nomor' => 123,
+            ],
+            3 => [
+                'provider' =>'Telkomsel',
+                'nomor' => 812,
+            ],
+            4 => [
+                'provider' =>'Telkomsel',
+                'nomor' => 812,
+            ],
+        ];
         return \view('items.index', \compact('items', 'categories'));
     }
 
@@ -49,7 +68,20 @@ class ItemController extends Controller
      */
     public function store(ItemRequest $req)
     {
-        $item = Item::create($req->all());
+        $code = strtolower($req->category[0]) .'-'.
+                strtolower($req->name[0]) .'-'.
+                strtolower($req->type[0]).'-'.
+                date('ymdHi') . '_' .
+                uniqid();
+
+        $item = Item::create([
+            'name'=>$req->name,
+            'code'=>$code,
+            'stock'=>$req->stock,
+            'price'=>$req->price,
+            'type'=>$req->type,
+            'category'=>$req->category
+        ]);
         return \redirect()->back()->with('msg', "Berhasil menambah barang $item->name");
     }
 
@@ -84,7 +116,13 @@ class ItemController extends Controller
      */
     public function update(ItemRequest $req, Item $item)
     {
-        $item->update($req->all());
+        $item->update([
+            'name'=>$req->name,
+            'stock'=>$req->stock,
+            'price'=>$req->price,
+            'type'=>$req->type,
+            'category'=>$req->category
+        ]);
         return redirect()->route('items.index')->with('msg', "Berhasil merubah data barang $item->name");
     }
 

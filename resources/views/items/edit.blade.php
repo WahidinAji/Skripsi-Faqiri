@@ -36,7 +36,17 @@
             <div class="form-group row">
                 <label for="category" class="col-sm-2 col-form-label">Kategori</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control @error('category') is-invalid @enderror" name="category" id="category" value="{{ old('price') ? old('category') : $item->category }}">
+                    <select name="category" id="category" class="form-control">
+                        <option value="Rokok" {{ $item->category == 'Rokok' || old('category') == 'Rokok' ? "selected" : null }}>Rokok</option>
+                        <option value="Sabun" {{ $item->category == 'Sabun' || old('category') == 'Sabun' ? "selected" : null }}>Sabun</option>
+                        <option value="Makanan" {{ $item->category == 'Makanan' || old('category') == 'Makanan' ? "selected" : null }}>Makanan</option>
+                        <option value="Minuman" {{ $item->category == 'Minuman' || old('category') == 'Minuman' ? "selected" : null }}>Minuman</option>
+                        <option value="Snack" {{ $item->category == 'Snack' || old('category') == 'Snack' ? "selected" : null }}>Snack</option>
+                        <option value="Obat" {{ $item->category == 'Obat' || old('category') == 'Obat' ? "selected" : null }}>Obat</option>
+                        <option value="Sembako" {{ $item->category == 'Sembako' || old('category') == 'Sembako' ? "selected" : null }}>Sembako</option>
+                        <option value="Alat Tulis Kerja" {{ $item->category == 'Alat Tulis Kerja' || old('category') == 'Alat Tulis Kerja' ? "selected" : null }}>Alat Tulis Kerja</option>
+                        <option value="Lain - lain" {{ $item->category == 'Lain - lain' || old('category') == 'Lain - lain' ? "selected" : null }}>Lain - lain</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group row">

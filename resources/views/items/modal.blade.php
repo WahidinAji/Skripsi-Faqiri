@@ -54,7 +54,17 @@
                     <div class="form-group row">
                         <label for="inputCategory" class="col-sm-2 col-form-label">Kategori</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control @error('category') is-invalid @enderror" id="inputCategory" value="{{ old('category') }}" name="category">
+                            <select name="category" id="category" class="form-control @error('category') is-invalid @enderror">
+                                <option value="Rokok" {{ old('category') == 'Rokok' ? "selected" : null }}>Rokok</option>
+                                <option value="Sabun" {{ old('category') == 'Sabun' ? "selected" : null }}>Sabun</option>
+                                <option value="Makanan" {{ old('category') == 'Makanan' ? "selected" : null }}>Makanan</option>
+                                <option value="Minuman" {{ old('category') == 'Minuman' ? "selected" : null }}>Minuman</option>
+                                <option value="Snack" {{ old('category') == 'Snack' ? "selected" : null }}>Snack</option>
+                                <option value="Obat" {{ old('category') == 'Obat' ? "selected" : null }}>Obat</option>
+                                <option value="Sembako" {{ old('category') == 'Sembako' ? "selected" : null }}>Sembako</option>
+                                <option value="Alat Tulis Kerja" {{ old('category') == 'Alat Tulis Kerja' ? "selected" : null }}>Alat Tulis Kerja</option>
+                                <option value="Lain - lain" {{ old('category') == 'Lain - lain' ? "selected" : null }}>Lain - lain</option>
+                            </select>
                         </div>
                     </div>
                 </div>

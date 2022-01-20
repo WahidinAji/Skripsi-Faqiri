@@ -41,6 +41,10 @@
         </tr>
         @empty
         @endforelse
+        <tr>
+            <td>Total </td>
+            <td colspan="2">{{ number_format($total,2,".",",") }}</td>
+        </tr>
     </table>
 
 </body>

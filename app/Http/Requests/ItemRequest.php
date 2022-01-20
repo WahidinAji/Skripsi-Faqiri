@@ -26,9 +26,9 @@ class ItemRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:3',
-            'code' => [
-                'required', Rule::unique('items', 'code')->ignore($this->item)
-            ],
+            // 'code' => [
+            //     'required', Rule::unique('items', 'code')->ignore($this->item)
+            // ],
             'stock' => 'required|min:1',
             'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'type' => 'required|in:box,unit',

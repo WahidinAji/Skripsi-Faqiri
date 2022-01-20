@@ -22,10 +22,14 @@ class ReportPdf extends Controller
         $report = Transaction::whereMonth('updated_at', $month)->whereYear('updated_at', $date)->get();
         $name = \now() . '_data-transaction';
 
-        // $customeSIze = array(0, 0, 684, 792);
+        $price_total = Transaction::whereMonth('updated_at', $month)->whereYear('updated_at', $date)->select('price_total')->get();
+        $arr = array();
+        foreach ($price_total as $key) {
+            $arr[] = $key->price_total;
+        }
+        $total = array_sum($arr);
 
-        // $pdf = PDF::loadview('pdf', \compact('transaction'))->setPaper($customeSIze, 'landsacpe');
-        $pdf = PDF::loadview('pdf', \compact('report', 'date'));
+        $pdf = PDF::loadview('pdf', \compact('report', 'date','total'));
         // /** @var Response $response */
         $response = $pdf->stream($name);
         return $response;
