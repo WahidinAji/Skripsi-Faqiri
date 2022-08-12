@@ -23,10 +23,12 @@ class CartController extends Controller
             ->select(DB::raw('count(id) as id, category'))
             ->groupBy('category')
             ->get();
-        $items = Item::where('category', 'herbivora')->select('id', 'code', 'name', 'price', 'type', 'stock')->get();
+        // $items = Item::where('category', 'herbivora')->select('id', 'code', 'name', 'price', 'type', 'stock')->get();
         if (\request()->has('category')) {
             $category = \request('category');
             $items = Item::where('category', $category)->select('id', 'code', 'name', 'price', 'type', 'stock')->get();
+        } else {
+            $items = Item::query()->select('id', 'code', 'name', 'price', 'type', 'stock')->get();
         }
         $carts = Cart::with('items')->where('status', '0')->get();
         $sum = Cart::select(DB::raw("sum(IF(status = '0',price,0)) as sum"))->get();
@@ -64,7 +66,7 @@ class CartController extends Controller
             $cart->status = '0';
             $item->stock = $item->stock - $request->total;
             $total = $request->total;
-          
+
             if (isset($item_id)) {
                 //total updating if $team_id is true
                 $total = $item_id->total + $request->total;

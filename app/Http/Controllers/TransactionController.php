@@ -41,8 +41,8 @@ class TransactionController extends Controller
             $transactions = $transactions->whereYear('date', $year);
             $days = $days->whereYear('date', $year);
         } else {
-            $transactions = $transactions->whereYear('date', 2021);
-            $days = $days->whereYear('date', 2021);
+            $transactions = $transactions->whereYear('date', now());
+            $days = $days->whereYear('date', now());
         }
         $transactions = $transactions->get();
         $days = $days->get();
